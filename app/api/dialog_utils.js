@@ -16,6 +16,28 @@ function mergeBranches(tree, branches){
   return tree;
 }
 
+/*
+  example entities input
+  {
+    intent : [
+      {
+        confidence : 0.33,
+        value : "greetings"
+      }
+    ],
+    
+    company : [
+      {
+        confidence : 0.51,
+        value : "flipkart"
+      },
+      {
+        confidence : 0.31,
+        value : "Amazon"
+      }
+    ]
+  }
+*/
 function pruneEntities(entities){
   var pruned = {};
   for(var entityName in entities){
