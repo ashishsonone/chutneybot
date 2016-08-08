@@ -1,0 +1,53 @@
+.bubble {
+  margin : 10px;
+}
+
+.chat {
+  font-size: large;
+}
+
+.suggestion {
+  padding : 10px;
+  font-size: small;
+  display : inline-block;
+  color : green;
+}
+
+.cardview{
+  /*border : 1px solid;*/
+  /*border-radius: 25px;*/
+  padding : 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.card{
+  display : inline-block;
+  font-size : small;
+  color : brown;
+  margin: 10px;
+  text-align: center;
+}
+
+.border {
+  border : 1px solid;
+  border-radius: 25px;
+  padding : 10px;
+  display : inline-block;
+}
+
+.bot {
+  border-color: aqua;
+}
+
+.user {
+  border-color: orange;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}

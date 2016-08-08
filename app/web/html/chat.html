@@ -1,0 +1,59 @@
+<html ng-app="app">
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="../js/chat_controller.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/chat.css">
+    <title>WebChutney Chat Bot</title>
+  </head>
+
+  <body ng-controller="AppController" ng-init=init()>
+    <div class="container">
+      <div class="row" id="notification" ng-style="toastError && {color : 'red'} || {color : 'green'}">
+        <h5>Last result : {{toastText}}</h5>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-xs-2"></div>
+      <div class="col-xs-8 chat">
+        <div class="row bubble" ng-repeat="dialogue in chatHistory">
+          <div ng-if="dialogue.bot" class="col-xs-2"></div>
+          <div ng-class="{'col-xs-10' : true, right : dialogue.bot, left : (!dialogue.bot)}">
+            <div ng-if="dialogue.type=='text'" ng-class="{border:true, bot : dialogue.bot, user : (!dialogue.bot)}">{{dialogue.value}}</div>
+            <div ng-if="dialogue.type=='cards'" ng-class="{cardview:true, bot : dialogue.bot, user : (!dialogue.bot)}">
+              <div class="card" ng-repeat="card in dialogue.value">
+                <img ng-src="{{card.url}}" height="90"><br>
+                <span>{{card.caption}}</span>
+              </div>
+            </div>
+          </div>
+          <div ng-if="!dialogue.bot" class="col-xs-2"></div>
+        </div>
+        
+        <div class="row bubble" ng-if="loading">
+          <div class="col-xs-2"></div>
+          <div ng-class="{'col-xs-10' : true, right : true}">
+            <img src="progress.gif" height="60">
+          </div>
+        </div>
+        
+        <div class="row bubble">
+          <div class="col-xs-10">
+            <input ng-model="userInput" class="form-control" type="text">
+          </div>
+          <div class="col-xs-2">
+            <span class="btn btn-success" ng-click="chat()">Send</span>
+          </div>
+        </div>
+        <div class="row bubble">
+          <div class="suggestion" ng-repeat="suggestion in suggestions">
+            <span ng-click="clickSuggestion(suggestion)">"<u>{{suggestion}}</u>"</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-2"></div>
+    </div>
+  </body>
+</html>
