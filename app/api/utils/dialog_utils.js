@@ -1,7 +1,7 @@
 
 var extend = require('util')._extend
-var witConfig = require('./config/wit.ai');
-var dialogConfig = require('./config/dialog');
+var witConfig = require('../config/wit.ai');
+var dialogConfig = require('../config/dialog');
 
 const {Wit, log} = require('node-wit');
 const client = new Wit({accessToken: witConfig.accessToken});
@@ -9,7 +9,7 @@ const client = new Wit({accessToken: witConfig.accessToken});
 function mergeBranches(tree, branches){
   for(var k in branches){
     var branchName = branches[k];
-    var branchTree = require('./nodes/' + branchName).tree;
+    var branchTree = require('../nodes/' + branchName).tree;
     //console.log("branchName = " + branchName + " %j", branchTree);
     tree = extend(tree, branchTree);
   }

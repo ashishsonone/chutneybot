@@ -1,7 +1,7 @@
 "use strict";
 
 var dialogConfig = require('./config/dialog');
-var dialogUtils = require('./dialog_utils');
+var dialogUtils = require('./utils/dialog_utils');
 
 var RSVP = require('rsvp');
 
@@ -42,7 +42,7 @@ function chain(session){
     return session; //we're done
   }
   
-  if(session.state.nodesVisited.length > 10){
+  if(session.state.nodesVisited.length > 50){
     session.state.nextNode = "infinite";
   }
   

@@ -5,6 +5,8 @@ var shortid = require('shortid');
 var router = express.Router();
 
 var dialog = require('./dialog');
+var LogModel = require('./models/log').model;
+var SessionModel = require('./models/session').model;
 
 /*
   will contain the current state of the conversation
@@ -13,6 +15,49 @@ var dialog = require('./dialog');
     handler : the function which will handle the next input
 */
 var sessionMap = {};
+
+function storeLog(session){
+  var promise = SessionModel.findOneAndUpdate(
+    {sessionId : session.sessionId},
+    {'$inc' : {count : 1}},
+    {upsert : true}
+  ).exec();
+  
+  //clean intent (remove arr key)
+  var intent = session.state.intent;
+  if(intent){
+    delete intent.arr;
+    intent = intent.map;
+  }
+  
+  //clean entities(remove arr key from each entity mapping)
+  var entities = session.state.entities;
+  if(entities){
+    for(var k in entities){
+      delete entities[k].arr;
+      entities[k] = entities[k].map;
+    }
+  }
+
+  console.log("intent %j", intent);
+  console.log("entities %j", entities);
+  
+  var logObject = new LogModel({
+    sessionId : session.sessionId,
+    context: session.context,
+
+    input : session.state.input,
+    output : session.state.output,
+    suggestions : session.state.suggestions,
+
+    nodesVisited : session.state.nodesVisited,
+    intent : intent,
+    entities : entities,
+
+    activeNode : session.activeNode
+  });
+  logObject.save();
+}
 
 /*
   get the next response
@@ -45,6 +90,9 @@ router.post('/chat', function(req, res){
   
   promise = promise.then(function(session){
     console.log("/chat : over and out ");
+    
+    storeLog(session);
+    
     return res.json({
       sessionId : session.sessionId,
       context : session.context,

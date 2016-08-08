@@ -1,6 +1,8 @@
+'use strict';
+
 var chai = require('chai');
 var expect = chai.expect; // we are using the "expect" style of Chai
-var dialogUtils = require('../api/dialog_utils');
+var dialogUtils = require('../api/utils/dialog_utils');
 var sinon = require('sinon');
 var dialogConfig = require('../api/config/dialog');
 
