@@ -1,4 +1,7 @@
 "use strict"
+var suggestionsDb = require('../db/suggestions');
+var _ = require('underscore');
+
 var tree = {
   "start" : {
     id : "start",
@@ -9,7 +12,25 @@ var tree = {
     reply : function(session){
       return {
         reply : "Hi I am WebChutney Bot. Call me Beta. Ask me something about WebChutney",
-        suggestions : ["how to contact", "how can you help me", "show your best work", "work done for flipkart", "your top clients"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "position"
+  },
+  
+  "position" : {
+    id : "position",
+    condition : function(session){
+      return session.state.entities["position"];
+    },
+    
+    reply : function(session){
+      return {
+        reply : "So you want to know who our " + session.state.entities["position"].arr[0].value + " is ?. Well I don't know yet. I am new here you know !! ;)",
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
@@ -45,7 +66,7 @@ var tree = {
     reply : function(session){
       return {
         reply : "Ask me something about the company: portfolio, clients, or how to contact",
-        suggestions : ["how can you help me", "show your best work", "work done for flipkart", "your top clients"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
@@ -63,7 +84,7 @@ var tree = {
     reply : function(session){
       return {
         reply : "I am cool. How may I help you?",
-        suggestions : ["how can you help me", "show your best work", "work done for flipkart", "your top clients"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
@@ -135,7 +156,7 @@ var tree = {
       ];
       return {
         reply : output,
-        suggestions : ["how can you help me", "show your best work", "work done for flipkart", "your top clients"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
@@ -153,7 +174,7 @@ var tree = {
     reply : function(session){
       return {
         reply : "I am stuck in infinite loop - unable to generate a response. Sorry for this rude behavior. Please ask something else.",
-        suggestions : ["how can you help me", "show your best work", "work done for flipkart", "your top clients"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
