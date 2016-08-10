@@ -8,6 +8,12 @@ To run tests:
 
 To view conversation logs:(in mongo shell)
   use chutney;
+  
+  //view logs
   db.logs.find({}, {input : true, nodesVisited : true, sessionId : true, _id : false, context : true});
+  
+  //view sessions
   db.sessions.find({}, {sessionId : true, count : true})
 
+  //remove sessions with no conversation
+  db.sessions.remove({count : {$lte : 1}})

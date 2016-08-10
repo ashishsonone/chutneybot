@@ -49,12 +49,45 @@ function getCompanyWorkReply(companyEntities) {
   return reply;
 }
 
+function getCategoryWorkReply(categoryEntities){
+  var categories = Object.keys(categoryEntities.map);
+  var category = categories[0];
+  console.log("work.category " + category);
+  category = category.toLowerCase();
+  
+  var reply = [];
+
+  if(workDb.categories[category]){
+    reply.push({
+      type : "text",
+      value : "Look at our finest work in " + category + " category"
+    });
+
+    reply = reply.concat(workDb.categories[category]);
+  }
+  else{
+    reply.push({
+      type : "text",
+      value : "I don't have data for " + category + " category. Anyways have a look at our work from other categories. Or choose a category like : ads, social media, banner, website, etc like 'best work in social media'"
+    });
+
+    reply = reply.concat(workDb.work["general"]); //concat
+  }
+  
+//  reply.push({
+//    type : "text",
+//    value : "I am not yet been trained to understand categories yet. Please come back sometime later. I might have evolved by then. pika... pika..."
+//  });
+  
+  return reply;
+}
+
 var tree = {
   "work.root" : {
     id : "work.root",
     condition : function (session) {
       var entities = session.state.entities;
-      return !(entities["company"]); //no company entity
+      return !(entities["company"] || entities["category"]); //no company entity
     },
     
     reply : function (session) {
@@ -93,8 +126,29 @@ var tree = {
     
     child : null,
     stop : true,
-    sibling : "work.company"
-  }
+    sibling : "work.category"
+  },
+  
+  "work.category" : {
+    id : "work.category",
+    condition : function (session) {
+      return session.state.entities["category"];
+    },
+    
+    reply : function (session) {
+      var categoryEntities = session.state.entities["category"];
+      
+      var reply = getCategoryWorkReply(categoryEntities);
+      return {
+        reply : reply,
+        suggestions : ["how to contact"]
+      };
+    },
+    
+    child : null,
+    stop : true,
+    sibling : null,
+  },
 };
 
 module.exports = {
