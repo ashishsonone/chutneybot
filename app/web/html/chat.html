@@ -16,8 +16,8 @@
       </div>
     </div>
     <div class="container">
-      <div class="col-xs-2"></div>
-      <div class="col-xs-8 chat">
+      <div class="col-sm-2 hidden-xs"></div>
+      <div class="col-xs-12 col-sm-8 chat">
         <div class="row bubble" ng-repeat="dialogue in chatHistory">
           <div ng-if="dialogue.bot" class="col-xs-2"></div>
           <div ng-class="{'col-xs-10' : true, right : dialogue.bot, left : (!dialogue.bot)}">
@@ -49,11 +49,11 @@
         </div>
         <div class="row bubble">
           <div class="suggestion" ng-repeat="suggestion in suggestions">
-            <span ng-click="clickSuggestion(suggestion)">"<u>{{suggestion}}</u>"</span>
+            <span onselectstart="return false" ng-click="clickSuggestion(suggestion)">"<u>{{suggestion}}</u>"</span>
           </div>
         </div>
       </div>
-      <div class="col-xs-2"></div>
+      <div class="col-sm-2 hidden-xs"></div>
     </div>
   </body>
 </html>
