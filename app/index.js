@@ -23,5 +23,7 @@ app.use('/css', express.static(__dirname + "/web/css"));
 var apiRouter = require('./api/api.js').router;
 app.use('/api', apiRouter);
 
-app.listen(process.env.PORT || 8002);
-console.log("Server listening on port 8002");
+console.log(process.env.PORT);
+var port = process.env.PORT || 8002;
+app.listen(port);
+console.log("Server listening on localhost:" + port);
