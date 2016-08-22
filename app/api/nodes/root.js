@@ -1,5 +1,8 @@
 "use strict"
 var suggestionsDb = require('../db/suggestions');
+var aboutusDb = require('../db/aboutus');
+var utils = require('../utils/utils');
+
 var _ = require('underscore');
 
 var tree = {
@@ -28,15 +31,162 @@ var tree = {
     },
     
     reply : function(session){
+      var position = utils.extractFirstEntityValue(session.state.entities, 'position');
+      var content = "So you want to know who our " + position + " is";
+      
+      var location = utils.extractFirstEntityValue(session.state.entities, 'location');
+      if(location){
+        content = "So you want to know who our " + position + " is at " + location + " location";
+      }
       return {
-        reply : "So you want to know who our " + session.state.entities["position"].arr[0].value + " is ?. Well I don't know yet. I am new here you know !! ;)",
+        reply : content,
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
     child : null,
     stop : true,
-    sibling : "contact"
+    sibling : "person"
+  },
+  
+  "person" : {
+    id : "person",
+    condition : function(session){
+      return session.state.entities["person"];
+    },
+    
+    reply : function(session){
+      var name = utils.extractFirstEntityValue(session.state.entities, 'person');
+      var content = "So you want to know who " + name + " is ?";
+      
+      return {
+        reply : content,
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "self"
+  },
+  
+  "self" : {
+    //only the name of the company mentioned without any intent
+    id : "self",
+    condition : function(session){
+      if(session.state.intent.arr.length > 0){
+        return false;
+      }
+      var type = utils.extractFirstEntityType(session.state.entities, ['company']);
+      if(type){
+        return false;
+      }
+      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
+      console.log("self : company : %j", company);
+      if(company == "chutney" || company == "dentsu"){
+        return true;
+      }
+      return false;
+    },
+    
+    reply : function(session){
+      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
+
+      //company will either be 'dentsu' or 'chutney'
+      return {
+        reply : aboutusDb.intro[company],
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "intro"
+  },
+  
+  "intro" : {
+    id : "intro",
+    condition : function(session){
+      return session.state.intent.map["intro"];
+    },
+    
+    reply : function(session){
+      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
+
+      var content = aboutusDb.intro['chutney'];
+      if(company == 'chutney'){
+        
+      }
+      else if(company == 'dentsu'){
+        content = aboutusDb.intro['dentsu'];
+      }
+      else if(company){
+        content = "I know nothing about " + company + ". Please ask something else";
+      }
+      
+      return {
+        reply : content,
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "owns"
+  },
+  
+  "owns" : {
+    id : "owns",
+    condition : function(session){
+      return session.state.intent.map["owns"];
+    },
+    
+    reply : function(session){
+      return {
+        reply : "Dentsu Inc",
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "founding_year"
+  },
+  
+  "founding_year" : {
+    id : "founding_year",
+    condition : function(session){
+      return session.state.intent.map["founding_year"];
+    },
+    
+    reply : function(session){
+      return {
+        reply : "WebChutney was founded in 1999. We’re millennials too",
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "awards"
+  },
+  
+  "awards" : {
+    id : "awards",
+    condition : function(session){
+      return session.state.intent.map["awards"] || session.state.entities['awards'];
+    },
+    
+    reply : function(session){
+      return {
+        reply : "We have won so many awards. I just can't tell you enough. Afterall, we are the experts right !",
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : "awards.root",
+    stop : false,
+    sibling : "blackhole"
   },
   
   "contact" : {
@@ -55,42 +205,6 @@ var tree = {
     child : "contact.name",
     stop : true,
     sibling : "capabilities",
-  },
-  
-  "capabilities" : {
-    id : "capabilities",
-    condition : function(session){
-      return session.state.intent.map["capabilities"];
-    },
-    
-    reply : function(session){
-      return {
-        reply : "Ask me something about the company: portfolio, clients, or how to contact",
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
-    },
-    
-    child : null,
-    stop : true,
-    sibling : "greetings"
-  },
-  
-  "greetings" : {
-    id : "greetings",
-    condition : function(session){
-      return session.state.intent.map["greetings"];
-    },
-    
-    reply : function(session){
-      return {
-        reply : "I am cool. How may I help you?",
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
-    },
-    
-    child : null,
-    stop : true,
-    sibling : "work"
   },
   
   "work" : {
@@ -185,8 +299,7 @@ var tree = {
 };
 
 var branches = [
-  "contact",
-  "work"
+  "awards"
 ];
 
 module.exports = {
