@@ -174,17 +174,17 @@ var tree = {
   "awards" : {
     id : "awards",
     condition : function(session){
-      return session.state.intent.map["awards"] || session.state.entities['awards'];
+      return session.state.entities['awards'];
     },
     
     reply : function(session){
       return {
-        reply : "We have won so many awards. I just can't tell you enough. Afterall, we are the experts right !",
+        reply : "Asking about the awards, huh ! We are like a magnet for awards. ;)",
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
-    child : "awards.root",
+    child : "awards.count",
     stop : false,
     sibling : "blackhole"
   },
