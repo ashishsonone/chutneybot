@@ -6,7 +6,7 @@ var morgan = require('morgan');
 var mongoose = require('./api/utils/mongoose_robust');
 var mongoConfig = require('./api/config/db').mongo;
 
-mongoose.connectWithRetry(mongoConfig.url, mongoConfig.poolSize);
+//mongoose.connectWithRetry(mongoConfig.url, mongoConfig.poolSize);
 
 var app = express();
 

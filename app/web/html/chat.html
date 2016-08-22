@@ -49,7 +49,7 @@
         </div>
         <div class="row bubble">
           <div class="suggestion" ng-repeat="suggestion in suggestions">
-            <span onselectstart="return false" ng-click="clickSuggestion(suggestion)">"<u>{{suggestion}}</u>"</span>
+            <span style="user-select : none;" ng-click="clickSuggestion(suggestion)">"<u>{{suggestion}}</u>"</span>
           </div>
         </div>
       </div>
