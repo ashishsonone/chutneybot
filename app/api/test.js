@@ -29,4 +29,31 @@ function chat(){
   });
 }
 
-chat();
+//chat();
+
+var u = require('./utils/utils');
+
+var entities = {
+  company : {
+    map : {
+      'flipkart' : {},
+      'dentsu' : {},
+      'chutney' : {},
+      'general' : {}
+    },
+    arr : []
+  },
+  
+  location : {
+    map : {
+      'mumbai' : {},
+      'banglore' : {},
+      'gurgaon' : {}
+    }
+  }
+};
+
+module.exports = {
+  entities : entities,
+  u : u
+};

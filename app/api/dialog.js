@@ -58,7 +58,7 @@ function chain(session){
 }
 
 function executeNode(session, node){
-  console.log(node.id + ": pushing to nodesVisited");
+  //console.log(node.id + ": pushing to nodesVisited");
   session.state.nodesVisited.push(node.id);
   
   if(!node.condition(session)){

@@ -17,6 +17,9 @@ var SessionModel = require('./models/session').model;
 var sessionMap = {};
 
 function storeLog(session){
+  console.log("return without storing into mongodb");
+  
+  return true;
   var promise = SessionModel.findOneAndUpdate(
     {sessionId : session.sessionId},
     {'$inc' : {count : 1}},
