@@ -12,6 +12,12 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
   
   $scope.sessionId; //unique session id received after initChat()
   
+  $scope.pressEnter = function(keyEvent) {
+    if (keyEvent.which === 13){
+      $scope.chat();
+    }
+  };
+  
   $scope.init = function(){
     $scope.initChat();
   };

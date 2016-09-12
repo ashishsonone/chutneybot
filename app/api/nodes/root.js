@@ -114,10 +114,11 @@ var tree = {
     },
     
     reply : function(session){
+      return null;
       return {
         reply : "Asking about the awards, huh ! We are like a magnet for awards. ;)",
         suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      };
     },
     
     child : "awards.count",

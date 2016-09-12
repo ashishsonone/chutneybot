@@ -76,7 +76,7 @@ function executeNode(session, node){
   promise = promise.then(function(out){
     //console.log(node.id + " out=%j", out);
     
-    if(out.reply != null){
+    if(out != null && out.reply != null){
       console.log(node.id + ": non-null reply came");
       //assume out.reply & out.suggestions non-null
       if(typeof(out.reply) == "string"){
@@ -96,6 +96,7 @@ function executeNode(session, node){
       session.state.suggestions = out.suggestions;
     }
     else{
+      //this means, was just a pointer to the child
       console.log(node.id + ":early exit to child " + node.child);
     }
     //set further flow thru node's child

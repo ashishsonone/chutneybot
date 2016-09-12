@@ -3,6 +3,8 @@ var suggestions = [
   "awards",
   "CEO of webchutney",
   "culture at webchutney",
+  "chutney news",
+  "whats new ?",
   "how old is chutney",
   "who owns chutney"
 ];

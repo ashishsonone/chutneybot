@@ -41,10 +41,10 @@
         
         <div class="row bubble">
           <div class="col-xs-10">
-            <input ng-model="userInput" class="form-control" type="text">
+            <input ng-model="userInput" class="form-control" type="text" ng-keypress="pressEnter($event)">
           </div>
           <div class="col-xs-2">
-            <span class="btn btn-success" ng-click="chat()">Send</span>
+            <span class="btn btn-success" ng-click="chat()" >Send</span>
           </div>
         </div>
         <div class="row bubble">
