@@ -1,5 +1,6 @@
 var suggestionsDb = require('../db/suggestions');
 var _ = require('underscore');
+var utils = require('../utils/utils');
 
 var tree = {
   "awards.count" : {
@@ -27,8 +28,17 @@ var tree = {
     },
     
     reply : function(session){
+      var reply = "We have so many awards in our jhola. Here are a few of them";
+      
+      var year = utils.extractFirstEntityValue(session.state.entities, 'year', []);
+      
+      
+      if(year){
+        reply = "Here are awards we've won in the year " + year;
+      }
+      
       return {
-        reply : "We have so many awards in our jhola. Here are a few of them",
+        reply : reply,
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },

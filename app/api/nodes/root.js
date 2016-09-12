@@ -67,73 +67,9 @@ var tree = {
     
     child : null,
     stop : true,
-    sibling : "self"
-  },
-  
-  "self" : {
-    //only the name of the company mentioned without any intent
-    id : "self",
-    condition : function(session){
-      if(session.state.intent.arr.length > 0){
-        return false;
-      }
-      var type = utils.extractFirstEntityType(session.state.entities, ['company']);
-      if(type){
-        return false;
-      }
-      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
-      console.log("self : company : %j", company);
-      if(company == "chutney" || company == "dentsu"){
-        return true;
-      }
-      return false;
-    },
-    
-    reply : function(session){
-      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
-
-      //company will either be 'dentsu' or 'chutney'
-      return {
-        reply : aboutusDb.intro[company],
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
-    },
-    
-    child : null,
-    stop : true,
-    sibling : "intro"
-  },
-  
-  "intro" : {
-    id : "intro",
-    condition : function(session){
-      return session.state.intent.map["intro"];
-    },
-    
-    reply : function(session){
-      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
-
-      var content = aboutusDb.intro['chutney'];
-      if(company == 'chutney'){
-        
-      }
-      else if(company == 'dentsu'){
-        content = aboutusDb.intro['dentsu'];
-      }
-      else if(company){
-        content = "I know nothing about " + company + ". Please ask something else";
-      }
-      
-      return {
-        reply : content,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
-    },
-    
-    child : null,
-    stop : true,
     sibling : "owns"
   },
+  
   
   "owns" : {
     id : "owns",
@@ -186,7 +122,45 @@ var tree = {
     
     child : "awards.count",
     stop : false,
-    sibling : "blackhole"
+    sibling : "culture"
+  },
+  
+  "culture" : {
+    id : "culture",
+    condition : function(session){
+      var adjective = utils.extractFirstEntityValue(session.state.entities, 'adjective', []);
+      return session.state.intent.map["culture"] || (adjective == 'cool');
+    },
+    
+    reply : function(session){
+      return {
+        reply : "So here is our culture video. See for yourself. I'm sure you'll like it.",
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "news"
+  },
+  
+  "news" : {
+    id : "news",
+    condition : function(session){
+      var adjective = utils.extractFirstEntityValue(session.state.entities, 'adjective', []);
+      return session.state.intent.map["news"] || (adjective == 'updates' || adjective == 'news');
+    },
+    
+    reply : function(session){
+      return {
+        reply : "Look at the headlines we make every now and then",
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "intro"
   },
   
   "contact" : {
@@ -222,6 +196,71 @@ var tree = {
     
     child : "work.root",
     stop : false,
+    sibling : "blackhole"
+  },
+  
+  "intro" : {
+    id : "intro",
+    condition : function(session){
+      return session.state.intent.map["intro"];
+    },
+    
+    reply : function(session){
+      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
+
+      var content = aboutusDb.intro['chutney'];
+      if(company == 'chutney'){
+        
+      }
+      else if(company == 'dentsu'){
+        content = aboutusDb.intro['dentsu'];
+      }
+      else if(company){
+        content = "I know nothing about " + company + ". Please ask something else";
+      }
+      
+      return {
+        reply : content,
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "self"
+  },
+  
+  "self" : {
+    //only the name of the company mentioned without any intent
+    id : "self",
+    condition : function(session){
+      if(session.state.intent.arr.length > 0){
+        return false;
+      }
+      var type = utils.extractFirstEntityType(session.state.entities, ['company']);
+      if(type){
+        return false;
+      }
+      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
+      console.log("self : company : %j", company);
+      if(company == "chutney" || company == "dentsu"){
+        return true;
+      }
+      return false;
+    },
+    
+    reply : function(session){
+      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
+
+      //company will either be 'dentsu' or 'chutney'
+      return {
+        reply : aboutusDb.intro[company],
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
     sibling : "blackhole"
   },
   
