@@ -13,6 +13,17 @@
   color : green;
 }
 
+.menu {
+  margin: 10px;
+  padding : 5px;
+  font-size: small;
+  display : inline-block;
+  border : 1px solid;
+  border-radius: 25px;
+  border-color: gray;
+  color : black;
+}
+
 .cardview{
   /*border : 1px solid;*/
   /*border-radius: 25px;*/

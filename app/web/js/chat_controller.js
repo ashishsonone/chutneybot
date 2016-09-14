@@ -10,7 +10,34 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
   $scope.suggestions = []; //quick user input suggestions
   $scope.userInput; //content of input box
   
-  $scope.sessionId; //unique session id received after initChat()
+  $scope.sessionId; //unique session id received after
+  
+  $scope.menu = [
+    {
+      text : 'About Us'
+    },
+    {
+      text : 'Services'
+    },
+    {
+      text : 'People'
+    },
+    {
+      text : 'Clients'
+    },
+    {
+      text : 'Awards'
+    },
+    {
+      text : 'Work with us'
+    },
+    {
+      text : 'Case Studies'
+    },
+    {
+      text : 'Misc'
+    }
+  ];
   
   $scope.pressEnter = function(keyEvent) {
     if (keyEvent.which === 13){
@@ -108,7 +135,56 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
       }
     });
   };
+  
+  $scope.clickMenu = function(menuItem){
+    console.log('Heya Menu clicked ' + menuItem.text);
 
+    var url = $scope.BASE_URL + "/api/chat";
+    console.log("chat : " + url);
+    
+    //fill POST payload
+    var data = {
+      sessionId : $scope.sessionId,
+      menuItem : menuItem
+    };
+
+    var dialogue = {
+      bot : false,
+      type : "text",
+      value : menuItem.text
+    };
+    $scope.chatHistory.push(dialogue);
+
+    $scope.userInput = "";
+    
+    $scope.loading = true;
+    $.ajax({
+      url : url,
+      type : "POST",
+      data : data,
+      success: function(data, textStatus, xhr) {
+        $scope.loading = false;
+        var output = data.output;
+        console.log('%j', output);
+        for(var i in output){
+          var dialogue = output[i];
+          dialogue.bot = true;
+          $scope.chatHistory.push(dialogue);
+        }
+        
+        $scope.suggestions = data.suggestions;
+        
+        $scope.showToast("Success chat" , false);
+        $scope.$apply();
+      },
+      error: function(xhr, textStatus, err) {
+        $scope.loading = false;
+        $scope.showToast("Failure chat", true);
+        $scope.$apply();
+      }
+    });
+  };  
+  
   $scope.clickSuggestion = function(suggestion){
     console.log("clickSuggestion with " + suggestion);
     $scope.userInput = suggestion;

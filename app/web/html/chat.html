@@ -52,6 +52,11 @@
             <span style="user-select : none;" ng-click="clickSuggestion(suggestion)">"<u>{{suggestion}}</u>"</span>
           </div>
         </div>
+        <div class="row bubble">
+          <div class="menu" ng-repeat="item in menu">
+            <span style="user-select : none;" ng-click="clickMenu(item)">{{item.text}}</span>
+          </div>
+        </div>
       </div>
       <div class="col-sm-2 hidden-xs"></div>
     </div>

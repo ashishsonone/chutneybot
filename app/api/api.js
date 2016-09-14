@@ -1,10 +1,13 @@
 'use strict'
 var express = require('express');
 var shortid = require('shortid');
+var RSVP = require('rsvp');
 
 var router = express.Router();
 
 var dialog = require('./dialog');
+var menu = require('./menu');
+
 var LogModel = require('./models/log').model;
 var SessionModel = require('./models/session').model;
 
@@ -78,6 +81,7 @@ router.post('/chat', function(req, res){
   
   console.log("sessionId " + sessionId);
   var input = req.body.input; //supposed to be string
+  var menuItem = req.body.menuItem; //json object
 
   var session = sessionMap[sessionId];
 
@@ -89,7 +93,13 @@ router.post('/chat', function(req, res){
   }
 
   //calling dialog.chat
-  var promise = dialog.chat(session, input);
+  var promise;
+  if(menuItem){
+    promise = menu.handleMenu(session, menuItem);
+  }
+  else{
+    promise = dialog.chat(session, input);
+  }
   
   promise = promise.then(function(session){
     console.log("/chat : over and out ");
