@@ -23,9 +23,15 @@
           <div ng-class="{'col-xs-10' : true, right : dialogue.bot, left : (!dialogue.bot)}">
             <div ng-if="dialogue.type=='text'" ng-class="{border:true, bot : dialogue.bot, user : (!dialogue.bot)}">{{dialogue.value}}</div>
             <div ng-if="dialogue.type=='cards'" ng-class="{cardview:true, bot : dialogue.bot, user : (!dialogue.bot)}">
-              <div class="card" ng-repeat="card in dialogue.value">
-                <img ng-src="{{card.url}}" height="90"><br>
-                <span>{{card.caption}}</span>
+              <div ng-class='{border : true, card: true}' ng-repeat="card in dialogue.value">
+                <div ng-repeat="(key, value) in card">
+                  <span style='color:grey;'>{{key}}</span> : {{getTypeOf(key) == 'string'? value.substr(0,30) : value}}
+                </div>
+              </div>
+            </div>
+            <div ng-if="dialogue.type.indexOf('-card') >= 0" ng-class="{border : true, bot : dialogue.bot, user : (!dialogue.bot)}">
+              <div style='{width:200}' ng-repeat="(key, value) in dialogue">
+                <span style='color:grey;'>{{key}}</span> : {{getTypeOf(key) == 'string'? value.substr(0,200) : value}}
               </div>
             </div>
           </div>

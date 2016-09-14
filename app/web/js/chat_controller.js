@@ -39,6 +39,10 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
     }
   ];
   
+  $scope.getTypeOf = function(x){
+    return typeof(x);
+  }
+  
   $scope.pressEnter = function(keyEvent) {
     if (keyEvent.which === 13){
       $scope.chat();
