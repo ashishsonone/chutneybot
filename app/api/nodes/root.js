@@ -161,25 +161,7 @@ var tree = {
     
     child : null,
     stop : true,
-    sibling : "intro"
-  },
-  
-  "contact" : {
-    id : "contact",
-    condition : function(session){
-      return session.state.intent.map["contact"];
-    },
-    
-    reply : function(session){
-      return {
-        reply : "Oh sure! You want to talk to a human. May I know your name please?",
-        suggestions : ["Ram Gopal Verma", "Meena Kumari"]
-      }
-    },
-    
-    child : "contact.name",
-    stop : true,
-    sibling : "capabilities",
+    sibling : "work"
   },
   
   "work" : {
@@ -189,15 +171,12 @@ var tree = {
     },
     
     reply : function(session){
-      return {
-        reply : "so you are interested in our work? That's good !! :P",
-        suggestions : []
-      }
+      return null;
     },
     
     child : "work.root",
     stop : false,
-    sibling : "blackhole"
+    sibling : "intro"
   },
   
   "intro" : {
@@ -207,7 +186,7 @@ var tree = {
     },
     
     reply : function(session){
-      var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
+      var company = utils.extractFirstEntityValue(session.state.entities, 'company', []);
 
       var content = aboutusDb.intro['chutney'];
       if(company == 'chutney'){
@@ -339,7 +318,8 @@ var tree = {
 };
 
 var branches = [
-  "awards"
+  "awards",
+  "work"
 ];
 
 module.exports = {

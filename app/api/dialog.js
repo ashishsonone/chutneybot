@@ -91,7 +91,7 @@ function executeNode(session, node){
 
       //console.log(node.id + " out=%j", out);
 
-      //append reply to state.output
+      //concat reply to state.output
       session.state.output = session.state.output.concat(out.reply);
       session.state.suggestions = out.suggestions;
     }

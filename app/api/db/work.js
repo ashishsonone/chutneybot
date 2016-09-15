@@ -1,80 +1,127 @@
-var companies = {
-  "flipkart" : {
-    type : "image",
-    url : "http://www.kelltontech.com/sites/default/files/icon%203.jpg.png",
-    caption : "Flipkart"
+var works = [
+  {
+    title : 'Flipkart First',
+    summary : 'Bacchon wali ad',
+    client : 'flipkart',
+    link : 'http://flipkart.com',
+    thumbnail : 'http://thumb.flipkart.com',
+    type : ['banner'],
+    office : 'mumbai'
   },
-  
-  "pepsi" : {
-    type : "image",
-    url : "https://pbs.twimg.com/profile_images/693938878424592385/iT_elI7o.png",
-    caption : "Pepsi"
+  {
+    title : 'Pepsi Thi Pe Gaya',
+    summary : 'Cool ad',
+    client : 'airtel',
+    link : 'http://pepsi.com',
+    thumbnail : 'http://thumb.pepsi.com',
+    type : ['ad'],
+    office : 'bengaluru'
   },
-  
-  "snapdeal" : {
-    type : "image",
-    url : "https://pbs.twimg.com/profile_images/672841756702990336/xpVU8NQe.png",
-    caption : "Snapdeal"
+  {
+    title : 'Pepsi Thi Jeet Gaya',
+    summary : 'Best pepsi ad',
+    client : 'airtel',
+    link : 'http://pepsi.com/peegaya',
+    thumbnail : 'http://thumb.pepsi.com/jeetgaya',
+    type : ['ad'],
+    office : 'bengaluru'
   },
-  
-  "airtel" : {
-    type : "image",
-    url : "https://static-s.aa-cdn.net/img/ios/879340543/b3fb5086917c843d43410f946374134c?v=1",
-    caption : "Airtel"
+  {
+    title : 'Flipkart 2',
+    summary : 'Bacchon wali ad',
+    client : 'flipkart',
+    link : 'http://flipkart.com',
+    thumbnail : 'http://thumb.flipkart.com',
+    type : ['banner'],
+    office : 'mumbai'
   },
-  
-  "myntra" : {
-    type : "image",
-    url : "https://pbs.twimg.com/profile_images/579899136339652608/OOJiqQPu.png",
-    caption : "Myntra"
+  {
+    title : 'Pepsi Thi Pe Gaya 3',
+    summary : 'Cool ad',
+    client : 'airtel',
+    link : 'http://pepsi.com',
+    thumbnail : 'http://thumb.pepsi.com',
+    type : ['ad'],
+    office : 'bengaluru'
+  },
+  {
+    title : 'Pepsi Thi Jeet Gaya 4',
+    summary : 'Best pepsi ad',
+    client : 'airtel',
+    link : 'http://pepsi.com/peegaya',
+    thumbnail : 'http://thumb.pepsi.com/jeetgaya',
+    type : ['ad'],
+    office : 'bengaluru'
+  },
+  {
+    title : 'Flipkart First 5',
+    summary : 'Bacchon wali ad',
+    client : 'flipkart',
+    link : 'http://flipkart.com',
+    thumbnail : 'http://thumb.flipkart.com',
+    type : ['banner'],
+    office : 'mumbai'
+  },
+  {
+    title : 'Pepsi Thi Pe Gaya 6',
+    summary : 'Cool ad',
+    client : 'airtel',
+    link : 'http://pepsi.com',
+    thumbnail : 'http://thumb.pepsi.com',
+    type : ['ad'],
+    office : 'bengaluru'
+  },
+  {
+    title : 'Pepsi Thi Jeet Gaya 7',
+    summary : 'Best pepsi ad',
+    client : 'airtel',
+    link : 'http://pepsi.com/peegaya',
+    thumbnail : 'http://thumb.pepsi.com/jeetgaya',
+    type : ['ad'],
+    office : 'bengaluru'
   }
-};
+];
 
-var work = {
-  "general" : [
-    {
-      type : "cards",
-      value :[
-        companies["flipkart"],
-        companies["pepsi"],
-        companies["airtel"]
-      ]
+function getWork(limit, skip){
+  if(!skip){
+    skip = 0;
+  }
+  
+  var result = [];
+  for(i=skip; i<works.length; i++){
+    if(i >= skip + limit){
+      break;
     }
-  ],
-};
+    var work = works[i];
+    result.push(work);
+  }
+  return result;
+}
 
-var categories = {
-  "ads" : [
-    {
-      type : "cards",
-      value : [
-        companies["myntra"],
-        companies["snapdeal"]
-      ]
+function getWorkForCompany(company){
+  var result = [];
+  for(var i in works){
+    var work = works[i];
+    if(work.client == company){
+      result.push(work);
     }
-  ],
-  "social media" : [
-    {
-      type : "cards",
-      value : [
-        companies["flipkart"],
-        companies["airtel"]
-      ]
+  }
+  return JSON.parse(JSON.stringify(result));
+}
+
+function getWorkByOffice(office){
+  var result = [];
+  for(var i in works){
+    var work = works[i];
+    if(work.office == office){
+      result.push(work);
     }
-  ],
-  "banner" : [
-    {
-      type : "cards",
-      value : [
-        companies["airtel"],
-        companies["pepsi"]
-      ]
-    }
-  ],
-};
+  }
+  return JSON.parse(JSON.stringify(result));
+}
 
 module.exports = {
-  work : work,
-  companies : companies,
-  categories : categories
+  getWork : getWork,
+  getWorkForCompany : getWorkForCompany,
+  getWorkByOffice : getWorkByOffice
 };
