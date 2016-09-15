@@ -6,7 +6,11 @@ var suggestions = [
   "chutney news",
   "whats new ?",
   "how old is chutney",
-  "who owns chutney"
+  "who owns chutney",
+  "work done for flipkart",
+  "gurgaon office work",
+  "showcase your portfolio",
+  "show me some of your work"
 ];
 
 module.exports = {

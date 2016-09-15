@@ -1,7 +1,10 @@
 'use strict';
 
 var workDb = require('../db/work');
+var suggestionsDb = require('../db/suggestions');
+
 var utils = require('../utils/utils');
+var _ = require('underscore');
 
 var tree = {
   "work.root" : {
@@ -38,7 +41,7 @@ var tree = {
       
       return {
         reply : reply,
-        suggestions : ["work by awards", "about siddharth"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       };
     },
     
@@ -73,7 +76,7 @@ var tree = {
       
       return {
         reply : reply,
-        suggestions : ["hi", "hello"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
@@ -105,7 +108,7 @@ var tree = {
       
       return {
         reply : reply,
-        suggestions : ["hi", "hello"]
+        suggestions : ["show more", "flipkart work"]
       }
     },
     
@@ -143,7 +146,7 @@ var tree = {
       
       return {
         reply : reply,
-        suggestions : ["hi", "hello"]
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
     
