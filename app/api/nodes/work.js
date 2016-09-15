@@ -44,7 +44,42 @@ var tree = {
     
     child : null,
     stop : true,
-    sibling : "work.general"
+    sibling : "work.place"
+  },
+  
+  "work.place" : {
+    id : "work.place",
+    condition : function(session){
+      var place = utils.extractFirstEntityValue(session.state.entities, 'place', []);
+      return place;
+    },
+    
+    reply : function(session){
+      var place = utils.extractFirstEntityValue(session.state.entities, 'place', []);
+      
+      var workList = workDb.getWorkByOffice(place);
+      var reply = [{
+        type : 'text',
+        value : "Here's what our " + place + " office has executed"
+      }];
+
+      //convert each in workList into work card
+      workList = workList.map(function(e){e.type = 'work-card'; return e});
+      var workReply = {
+        type : 'cards',
+        value : workList
+      }
+      reply.push(workReply);
+      
+      return {
+        reply : reply,
+        suggestions : ["hi", "hello"]
+      }
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "work.general",
   },
   
   "work.general" : {
@@ -78,6 +113,7 @@ var tree = {
     stop : true,
     sibling : null,
   },
+  
   
   "work.more" : {
     id : "work.more",

@@ -42,7 +42,7 @@ var works = [
     link : 'http://pepsi.com',
     thumbnail : 'http://thumb.pepsi.com',
     type : ['ad'],
-    office : 'bengaluru'
+    office : 'gurgaon'
   },
   {
     title : 'Pepsi Thi Jeet Gaya 4',
@@ -60,7 +60,7 @@ var works = [
     link : 'http://flipkart.com',
     thumbnail : 'http://thumb.flipkart.com',
     type : ['banner'],
-    office : 'mumbai'
+    office : 'gurgaon'
   },
   {
     title : 'Pepsi Thi Pe Gaya 6',
@@ -69,7 +69,7 @@ var works = [
     link : 'http://pepsi.com',
     thumbnail : 'http://thumb.pepsi.com',
     type : ['ad'],
-    office : 'bengaluru'
+    office : 'gurgaon'
   },
   {
     title : 'Pepsi Thi Jeet Gaya 7',
