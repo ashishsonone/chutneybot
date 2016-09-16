@@ -104,7 +104,7 @@ function getWork(limit, skip){
     var work = works[i];
     result.push(work);
   }
-  return result;
+  return JSON.parse(JSON.stringify(result));
 }
 
 function getWorkForCompany(company){

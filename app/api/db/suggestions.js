@@ -10,7 +10,8 @@ var suggestions = [
   "work done for flipkart",
   "gurgaon office work",
   "showcase your portfolio",
-  "show me some of your work"
+  "show me some of your work",
+  "awards won in 2014"
 ];
 
 module.exports = {
