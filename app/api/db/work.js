@@ -1,5 +1,6 @@
 var works = [
   {
+    _type : 'work-card',
     title : 'Flipkart First',
     summary : 'Bacchon wali ad',
     client : 'flipkart',
@@ -9,6 +10,7 @@ var works = [
     office : 'mumbai'
   },
   {
+    _type : 'work-card',
     title : 'Pepsi Thi Pe Gaya',
     summary : 'Cool ad',
     client : 'airtel',
@@ -18,6 +20,7 @@ var works = [
     office : 'bengaluru'
   },
   {
+    _type : 'work-card',
     title : 'Pepsi Thi Jeet Gaya',
     summary : 'Best pepsi ad',
     client : 'airtel',
@@ -27,6 +30,7 @@ var works = [
     office : 'bengaluru'
   },
   {
+    _type : 'work-card',
     title : 'Flipkart 2',
     summary : 'Bacchon wali ad',
     client : 'flipkart',
@@ -36,6 +40,7 @@ var works = [
     office : 'mumbai'
   },
   {
+    _type : 'work-card',
     title : 'Pepsi Thi Pe Gaya 3',
     summary : 'Cool ad',
     client : 'airtel',
@@ -45,6 +50,7 @@ var works = [
     office : 'gurgaon'
   },
   {
+    _type : 'work-card',
     title : 'Pepsi Thi Jeet Gaya 4',
     summary : 'Best pepsi ad',
     client : 'airtel',
@@ -54,6 +60,7 @@ var works = [
     office : 'bengaluru'
   },
   {
+    _type : 'work-card',
     title : 'Flipkart First 5',
     summary : 'Bacchon wali ad',
     client : 'flipkart',
@@ -63,6 +70,7 @@ var works = [
     office : 'gurgaon'
   },
   {
+    _type : 'work-card',
     title : 'Pepsi Thi Pe Gaya 6',
     summary : 'Cool ad',
     client : 'airtel',
@@ -72,6 +80,7 @@ var works = [
     office : 'gurgaon'
   },
   {
+    _type : 'work-card',
     title : 'Pepsi Thi Jeet Gaya 7',
     summary : 'Best pepsi ad',
     client : 'airtel',

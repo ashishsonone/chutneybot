@@ -83,7 +83,7 @@ function executeNode(session, node){
         //normalize
         out.reply = [
           {
-            type : "text",
+            _type : "text",
             value : out.reply
           }
         ];

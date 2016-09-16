@@ -41,6 +41,21 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
   
   $scope.getTypeOf = function(x){
     return typeof(x);
+  };
+  
+  $scope.display = function(x, l){
+    var type = typeof(x)
+    if(type == 'number'){
+      return x;
+    }
+    else{
+      x = JSON.stringify(x);
+    }
+    
+    if(l){
+      x = x.substr(0, l);
+    }
+    return x;
   }
   
   $scope.pressEnter = function(keyEvent) {
@@ -106,7 +121,7 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
 
     var dialogue = {
       bot : false,
-      type : "text",
+      _type : "text",
       value : $scope.userInput
     };
     $scope.chatHistory.push(dialogue);
@@ -154,7 +169,7 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
 
     var dialogue = {
       bot : false,
-      type : "text",
+      _type : "text",
       value : menuItem.text
     };
     $scope.chatHistory.push(dialogue);

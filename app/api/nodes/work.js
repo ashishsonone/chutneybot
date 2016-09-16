@@ -20,21 +20,19 @@ var tree = {
       var workList = workDb.getWorkForCompany(company);
       if(workList.length > 0){
         var reply = [{
-          type : 'text',
+          _type : 'text',
           value : 'Here is what we have done for our client ' + company,
         }];
         
-        //convert each in workList into work card
-        workList = workList.map(function(e){e.type = 'work-card'; return e});
         var workReply = {
-          type : 'cards',
+          _type : 'cards',
           value : workList
         }
         reply.push(workReply);
       }
       else{
         var reply = [{
-          type : 'text',
+          _type : 'text',
           value : "It seems we haven't worked for " + company + " yet"
         }];
       }
@@ -62,14 +60,12 @@ var tree = {
       
       var workList = workDb.getWorkByOffice(place);
       var reply = [{
-        type : 'text',
+        _type : 'text',
         value : "Here's what our " + place + " office has executed"
       }];
 
-      //convert each in workList into work card
-      workList = workList.map(function(e){e.type = 'work-card'; return e});
       var workReply = {
-        type : 'cards',
+        _type : 'cards',
         value : workList
       }
       reply.push(workReply);
@@ -94,14 +90,12 @@ var tree = {
     reply : function(session){
       var workList = workDb.getWork(5);
       var reply = [{
-        type : 'text',
+        _type : 'text',
         value : "Here is a part of our portfolio"
       }];
 
-      //convert each in workList into work card
-      workList = workList.map(function(e){e.type = 'work-card'; return e});
       var workReply = {
-        type : 'cards',
+        _type : 'cards',
         value : workList
       }
       reply.push(workReply);
@@ -132,14 +126,12 @@ var tree = {
     reply : function(session){
       var workList = workDb.getWork(5, 5);
       var reply = [{
-        type : 'text',
+        _type : 'text',
         value : "Here is next set of work. Remember to werk it"
       }];
 
-      //convert each in workList into work card
-      workList = workList.map(function(e){e.type = 'work-card'; return e});
       var workReply = {
-        type : 'cards',
+        _type : 'cards',
         value : workList
       }
       reply.push(workReply);

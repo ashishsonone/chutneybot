@@ -253,34 +253,34 @@ var tree = {
     reply : function(session){
       var output = [
         {
-          type : "text",
+          _type : "text",
           value : "I am unable to understand you. Please rephrase your query. In the mean time, look at these pics"
         },
         {
-          type : "cards",
+          _type : "cards",
           value :[
             {
-              type : "image",
+              _type : "image",
               url : "https://pbs.twimg.com/profile_images/604644048/sign051.gif",
               "caption" : "Go"
             },
             {
-              type : "image",
+              _type : "image",
               url : "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSTD2CSNAfy2CSEXfvRPIUptJD6tf8S8-fhXbSsl1UF8qH7fxdv9g",
               "caption" : "Dog"
             },
             {
-              type : "image",
+              _type : "image",
               url : "http://www.vetmed.ucdavis.edu/vmth/local_resources/images/featured_images/small_animal.jpg",
               "caption" : "Cat"
             },
             {
-              type : "image",
+              _type : "image",
               url : "http://cdn.bleedingcool.net/wp-content/uploads/2011/11/Toy-Story-gang-reunites-for-Small-Fry-HCJ0RC5-x-large.jpg",
               "caption" : "Toy Story"
             },
             {
-              type : "image",
+              _type : "image",
               url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnerdJ3_VUlZsnPSYVPJ9B2cYot9JbpCcpwmC3FJ5aFDYSGMrGag",
               "caption" : "Fancy car"
             }

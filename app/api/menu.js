@@ -13,14 +13,14 @@ function handleMenu(session, menuItem){
   var promise = RSVP.resolve(true);
   promise = promise.then(function(){
     var card1 = {
-      type : 'people-card',
+      _type : 'people-card',
       name : 'Siddharth Rao',
       position : 'CEO',
       contact : 'You dont contact Sid, he contacts you'
     };
     
     var result = {
-      type : 'cards',
+      _type : 'cards',
       value : [card1]
     };
     
