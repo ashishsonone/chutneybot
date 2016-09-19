@@ -1,6 +1,8 @@
 "use strict"
 var suggestionsDb = require('../db/suggestions');
 var aboutusDb = require('../db/aboutus');
+var peopleDb = require('../db/people');
+
 var utils = require('../utils/utils');
 
 var _ = require('underscore');
@@ -32,14 +34,36 @@ var tree = {
     
     reply : function(session){
       var position = utils.extractFirstEntityValue(session.state.entities, 'position');
-      var content = "So you want to know who our " + position + " is";
-      
+      var content = "So you want to know who our " + position + " is?";
       var location = utils.extractFirstEntityValue(session.state.entities, 'location');
       if(location){
         content = "So you want to know who our " + position + " is at " + location + " location";
       }
+      var reply = [
+        {
+          _type : 'text',
+          value : content
+        }
+      ];
+      
+      var person = peopleDb.getByPositionId(position);
+      if(!person){
+        var notFound = {
+          _type : 'text',
+          value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
+        }
+        reply.push(notFound);
+      }
+      else{
+        reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
+        reply.push({
+          _type : 'cards',
+          value : [person]
+        });
+      }
+      
       return {
-        reply : content,
+        reply : reply,
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
@@ -59,8 +83,27 @@ var tree = {
       var name = utils.extractFirstEntityValue(session.state.entities, 'person');
       var content = "So you want to know who " + name + " is ?";
       
+      var reply = [
+        {
+          _type : 'text',
+          value : content
+        }
+      ];
+      var person = peopleDb.getByNameId(name);
+      if(!person){
+        var notFound = {
+          _type : 'text',
+          value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
+        }
+        reply.push(notFound);
+      }
+      else{
+        reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
+        reply.push(person);
+      }
+      
       return {
-        reply : content,
+        reply : reply,
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
@@ -134,8 +177,19 @@ var tree = {
     },
     
     reply : function(session){
+      var reply = [
+        {
+          _type : 'text',
+          value : "So here is our culture video. See for yourself. I'm sure you'll like it."
+        },
+        {
+          _type : 'video-card',
+          url : 'https://www.youtube.com/watch?v=I_-6YxaDiTk',
+          title : 'the swag - dentsu webchutney'
+        }
+      ]
       return {
-        reply : "So here is our culture video. See for yourself. I'm sure you'll like it.",
+        reply : reply,
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },

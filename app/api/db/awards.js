@@ -80,7 +80,19 @@ function getAwardsForYear(year){
   return JSON.parse(JSON.stringify(result));
 }
 
+function getAwardsDomInt(dom_int){
+  var result = [];
+  for(var i in awards){
+    var award = awards[i];
+    if(award.dom_int == dom_int){
+      result.push(award);
+    }
+  }
+  return JSON.parse(JSON.stringify(result));
+}
+
 module.exports = {
   getAwards : getAwards,
-  getAwardsForYear : getAwardsForYear
+  getAwardsForYear : getAwardsForYear,
+  getAwardsDomInt : getAwardsDomInt
 };

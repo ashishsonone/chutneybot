@@ -39,6 +39,15 @@ app.controller('AppController', ['$scope', '$location', function($scope, $locati
     }
   ];
   
+  $scope.isLink = function(x){
+    if(typeof(x) == 'string'){
+      if(x && x.indexOf('http') == 0){
+        return true;
+      }
+    }
+    return false;
+  }
+  
   $scope.getTypeOf = function(x){
     return typeof(x);
   };

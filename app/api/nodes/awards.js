@@ -39,6 +39,8 @@ var tree = {
       
       var year = utils.extractFirstEntityValue(session.state.entities, 'year', []);
       
+      var dom_int = utils.extractFirstEntityValue(session.state.entities, 'dom_int', []);
+      
       var awardsList;
       if(year){
         reply[0].value = "Here are awards we've won in the year " + year;
@@ -46,6 +48,21 @@ var tree = {
         awardsList = awardsDb.getAwardsForYear(year);
         if(awardsList.length == 0){
           reply[0].value = "But oops, it seems we didn't win any in the year " + year;
+        }
+        else{
+          var awardsReply = {
+            _type : 'cards',
+            value : awardsList
+          }
+          reply.push(awardsReply);
+        }
+      }
+      else if(dom_int){
+        reply[0].value = "Here are the notable " + dom_int + " awards we've won";
+        
+        awardsList = awardsDb.getAwardsDomInt(dom_int);
+        if(awardsList.length == 0){
+          reply[0].value = "But oops, it seems we didn't win any " + dom_int + " awards";
         }
         else{
           var awardsReply = {
