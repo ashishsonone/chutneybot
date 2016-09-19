@@ -7,8 +7,11 @@ function handleMenu(session, menuItem){
     menuItem : menuItem,
     nodesVisited : [],
     output : [],
-    suggestions : []
+    suggestions : [],
+    ts : []
   };
+  
+  session.state.ts.push(new Date().getTime());
   
   var promise = RSVP.resolve(true);
   promise = promise.then(function(){

@@ -46,26 +46,30 @@ var tree = {
         }
       ];
       
-      var person = peopleDb.getByPositionId(position);
-      if(!person){
-        var notFound = {
-          _type : 'text',
-          value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
+      var promise = peopleDb.getByPositionId(position);
+      promise = promise.then(function(person){
+        if(!person){
+          var notFound = {
+            _type : 'text',
+            value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
+          }
+          reply.push(notFound);
         }
-        reply.push(notFound);
-      }
-      else{
-        reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
-        reply.push({
-          _type : 'cards',
-          value : [person]
-        });
-      }
+        else{
+          reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
+          reply.push({
+            _type : 'cards',
+            value : [person]
+          });
+        }
+
+        return {
+          reply : reply,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        }
+      });
       
-      return {
-        reply : reply,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      return promise;
     },
     
     child : null,
@@ -89,23 +93,28 @@ var tree = {
           value : content
         }
       ];
-      var person = peopleDb.getByNameId(name);
-      if(!person){
-        var notFound = {
-          _type : 'text',
-          value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
-        }
-        reply.push(notFound);
-      }
-      else{
-        reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
-        reply.push(person);
-      }
       
-      return {
-        reply : reply,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      var promise = peopleDb.getByNameId(name);
+      promise = promise.then(function(person){
+        if(!person){
+          var notFound = {
+            _type : 'text',
+            value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
+          }
+          reply.push(notFound);
+        }
+        else{
+          reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
+          reply.push(person);
+        }
+
+        return {
+          reply : reply,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        }
+      });
+      
+      return promise;
     },
     
     child : null,
@@ -147,6 +156,21 @@ var tree = {
     
     child : null,
     stop : true,
+    sibling : "clients"
+  },
+  
+  "clients" : {
+    id : "clients",
+    condition : function(session){
+      return session.state.intent.map["clients"];
+    },
+    
+    reply : function(session){
+      return null;
+    },
+    
+    child : "clients.office",
+    stop : false,
     sibling : "awards"
   },
   
@@ -373,7 +397,8 @@ var tree = {
 
 var branches = [
   "awards",
-  "work"
+  "work",
+  "clients"
 ];
 
 module.exports = {

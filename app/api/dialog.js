@@ -114,8 +114,11 @@ function chat(session, input){
     input : input,
     nodesVisited : [],
     output : [],
-    suggestions : []
+    suggestions : [],
+    ts : []
   };
+  
+  session.state.ts.push(new Date().getTime());
   
   var promise = RSVP.resolve(true);
   if(input){
@@ -124,7 +127,8 @@ function chat(session, input){
     promise = promise.then(function(result){
       session.state.intent = result.intent;
       session.state.entities = result.entities;
-
+      
+      session.state.ts.push(new Date().getTime());
       return session;
     });
   }

@@ -17,3 +17,7 @@ To view conversation logs:(in mongo shell)
 
   //remove sessions with no conversation
   db.sessions.remove({count : {$lte : 1}})
+  
+  
+To take dumps of db regularly:
+  mongodump --db chutney --out d1/

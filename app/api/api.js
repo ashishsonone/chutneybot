@@ -20,9 +20,15 @@ var SessionModel = require('./models/session').model;
 var sessionMap = {};
 
 function storeLog(session){
+  for(var i=session.state.ts.length-1; i>0; i--){
+    session.state.ts[i] = session.state.ts[i] - session.state.ts[i-1]
+  }
+  console.log('time measure %j', session.state.ts);
+
   console.log("return without storing into mongodb");
   
   return true;
+  
   var promise = SessionModel.findOneAndUpdate(
     {sessionId : session.sessionId},
     {'$inc' : {count : 1}},
@@ -103,6 +109,8 @@ router.post('/chat', function(req, res){
   
   promise = promise.then(function(session){
     console.log("/chat : over and out ");
+    
+    session.state.ts.push(new Date().getTime());
     
     storeLog(session);
     
