@@ -1,3 +1,5 @@
+var WorkModel = require('../models/work').model;
+
 var works = [
   {
     _type : 'work-card',
@@ -91,45 +93,71 @@ var works = [
   }
 ];
 
+var typeExpansionMap = {
+  "on ground" : "On-ground experiences",
+  "social media" : "Social Media",
+  "branded content" : "Branded Content",
+  "real time marketing" : "Real Time Marketing",
+  "content" : "Content",
+  "social media content" : "Social Media Content",
+  "tech innovation" : "Tech Innovation",
+  "film and social media innovation" : "Film and Social Media innovation"
+};
+
+function expandWorkType(typeList){
+  typeList = typeList.map(function(type){
+    return typeExpansionMap[type] || type;    
+  });
+  return typeList;
+}
+
+function present(workList){
+  workList = workList.map(function(e){
+    console.log("%j", e.type);
+    e.type = expandWorkType(e.type);
+    return e;
+  });
+  return workList;
+}
+
 function getWork(limit, skip){
   if(!skip){
     skip = 0;
   }
   
-  var result = [];
-  for(i=skip; i<works.length; i++){
-    if(i >= skip + limit){
-      break;
-    }
-    var work = works[i];
-    result.push(work);
-  }
-  return JSON.parse(JSON.stringify(result));
+  var promise = WorkModel.find({
+  }, {
+    _id : false,
+    clientId : false,
+  }).limit(limit).skip(skip).exec();
+  
+  return promise;
 }
 
 function getWorkForCompany(company){
-  var result = [];
-  for(var i in works){
-    var work = works[i];
-    if(work.client == company){
-      result.push(work);
-    }
-  }
-  return JSON.parse(JSON.stringify(result));
+  var promise = WorkModel.find({
+    clientId : company
+  }, {
+    _id : false,
+    clientId : false,
+  }).limit(5).exec();
+  
+  return promise;
 }
 
 function getWorkByOffice(office){
-  var result = [];
-  for(var i in works){
-    var work = works[i];
-    if(work.office == office){
-      result.push(work);
-    }
-  }
-  return JSON.parse(JSON.stringify(result));
+  var promise = WorkModel.find({
+    office : office
+  }, {
+    _id : false,
+    clientId : false,
+  }).limit(5).exec();
+  
+  return promise;
 }
 
 module.exports = {
+  present : present,
   getWork : getWork,
   getWorkForCompany : getWorkForCompany,
   getWorkByOffice : getWorkByOffice

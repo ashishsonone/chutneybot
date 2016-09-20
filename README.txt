@@ -18,6 +18,20 @@ To view conversation logs:(in mongo shell)
   //remove sessions with no conversation
   db.sessions.remove({count : {$lte : 1}})
   
-  
-To take dumps of db regularly:
-  mongodump --db chutney --out d1/
+
+- - - - - -
+How to sync local and remote db:
+
+#Take dumps of db regularly:
+folder=2016-09-19-18-00
+mongodump --db chutney --out $folder
+
+#copy over to remote folder 2016-09-19-18-00
+scp -r -i ~/Documents/AWS/estest.pem $folder $myEC2:~/Downloads/
+
+#ssh to remote
+ssh -i estest.pem $myEC2
+
+#restore:
+folder=2016-09-19-18-00
+mongorestore --db chutney 2016-09-19-18-00/chutney/

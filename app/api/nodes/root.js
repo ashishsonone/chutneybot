@@ -119,9 +119,23 @@ var tree = {
     
     child : null,
     stop : true,
-    sibling : "owns"
+    sibling : "team"
   },
   
+  "team" : {
+    id : "team",
+    condition : function(session){
+      return session.state.intent.map["team"];
+    },
+    
+    reply : function(session){
+      return null;
+    },
+    
+    child : "team.intro",
+    stop : false,
+    sibling : "owns"
+  },
   
   "owns" : {
     id : "owns",
@@ -266,20 +280,23 @@ var tree = {
     reply : function(session){
       var company = utils.extractFirstEntityValue(session.state.entities, 'company', []);
 
-      var content = aboutusDb.intro['chutney'];
+      var reply;
+      var suggestions = _.sample(suggestionsDb.suggestions, 4);
+      
       if(company == 'chutney'){
-        
+        reply = aboutusDb.getChunteyIntro();
+        suggestions = ["ok! but what is DAN", "whats new ?"];
       }
       else if(company == 'dentsu'){
-        content = aboutusDb.intro['dentsu'];
+        reply = aboutusDb.intro['dentsu']; //text
       }
       else if(company){
-        content = "I know nothing about " + company + ". Please ask something else";
+        reply = "I know nothing about " + company + ". Please ask something else";
       }
       
       return {
-        reply : content,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
+        reply : reply,
+        suggestions : suggestions
       }
     },
     
@@ -398,7 +415,8 @@ var tree = {
 var branches = [
   "awards",
   "work",
-  "clients"
+  "clients",
+  "team"
 ];
 
 module.exports = {

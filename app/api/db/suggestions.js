@@ -1,7 +1,8 @@
 var suggestions = [
   "what is webchutney",
-  "awards",
+  "awards won",
   "CEO of webchutney",
+  "your CCO",
   "culture at webchutney",
   "chutney news",
   "whats new ?",
@@ -11,7 +12,8 @@ var suggestions = [
   "gurgaon office work",
   "showcase your portfolio",
   "show me some of your work",
-  "awards won in 2014"
+  "awards won in 2014",
+  "about the team"
 ];
 
 module.exports = {
