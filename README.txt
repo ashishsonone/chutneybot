@@ -30,8 +30,12 @@ mongodump --db chutney --out $folder
 scp -r -i ~/Documents/AWS/estest.pem $folder $myEC2:~/Downloads/
 
 #ssh to remote
-ssh -i estest.pem $myEC2
+ssh -i ~/Documents/AWS/estest.pem $myEC2
 
 #restore:
 folder=2016-09-19-18-00
-mongorestore --db chutney 2016-09-19-18-00/chutney/
+cd Downloads
+mongo chutney --eval "db.clients.drop(); db.people.drop(); db.work.drop();"
+mongorestore --collection clients --db chutney $folder/chutney/clients.bson
+mongorestore --collection work --db chutney $folder/chutney/work.bson
+mongorestore --collection people --db chutney $folder/chutney/people.bson
