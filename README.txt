@@ -20,23 +20,12 @@ To view conversation logs:(in mongo shell)
   
 
 - - - - - -
-How to sync local and remote db:
+How to sync local and remote db
 
-#Take dumps of db regularly:
-folder=2016-09-19-18-00
-mongodump --db chutney --out $folder
+#scripts in 'app/scripts' folder
 
-#copy over to remote folder 2016-09-19-18-00
-scp -r -i ~/Documents/AWS/estest.pem $folder $myEC2:~/Downloads/
+#Take dumps of db and scp to remote: 
+python dump_scp.py
 
-#ssh to remote and execute commands
-ssh -i ~/Documents/AWS/estest.pem $myEC2
-
-#execute following to restore
-folder=2016-09-19-18-00
-cd ~/Downloads
-mongo chutney --eval "db.clients.drop(); db.people.drop(); db.work.drop();"
-mongorestore --collection clients --db chutney $folder/chutney/clients.bson
-mongorestore --collection work --db chutney $folder/chutney/work.bson
-mongorestore --collection people --db chutney $folder/chutney/people.bson
-mongorestore --collection awards --db chutney $folder/chutney/awards.bson
+#restore the local mongodb backup on remote using restore.sh script
+./restore.sh  <backup-folder-name>
