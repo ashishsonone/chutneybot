@@ -33,8 +33,10 @@
             <div ng-if="dialogue._type.indexOf('-card') >= 0" ng-class="{cardview:true, bot : dialogue.bot, user : (!dialogue.bot)}">
               <div ng-class='{border : true, card: true}'>
                 <div ng-repeat="(key, value) in dialogue">
-                  <span style='color:grey;'>{{key}}</span> : <a ng-if="isLink(value)" ng-href="{{value}}">{{value.substr(0,40)}}</a>
-                  <span ng-if="!isLink(value)">{{display(value, 50)}}</span>
+                  <div ng-hide="value===true">
+                    <span style='color:grey;'>{{key}}</span> : <a ng-if="isLink(value)" ng-href="{{value}}">{{value.substr(0,40)}}</a>
+                    <span ng-if="!isLink(value)">{{display(value, 50)}}</span>
+                  </div>
                 </div>
               </div>
             </div>

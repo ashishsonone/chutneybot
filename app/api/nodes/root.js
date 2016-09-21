@@ -15,8 +15,18 @@ var tree = {
     },
     
     reply : function(session){
+      var reply = [
+        {
+          _type : 'text',
+          value : "Hi I am chutney's new chat bot. Call me Sid. Ask me something about WebChutney."
+        },
+        {
+          _type : 'text',
+          value : "To see what kind of questions you can ask look/tap at suggestions shown(in green) just below the input box. Or you can click on a menu item for a guided tour"
+        }
+      ]
       return {
-        reply : "Hi I am WebChutney Bot. Call me Beta. Ask me something about WebChutney",
+        reply : reply,
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
@@ -202,7 +212,7 @@ var tree = {
       };
     },
     
-    child : "awards.count",
+    child : "awards.name",
     stop : false,
     sibling : "culture"
   },
@@ -267,6 +277,21 @@ var tree = {
     },
     
     child : "work.root",
+    stop : false,
+    sibling : "contact"
+  },
+  
+  "contact" : {
+    id : "contact",
+    condition : function(session){
+      return session.state.intent.map["contact"] || session.state.intent.map["address"];
+    },
+    
+    reply : function(session){
+      return null;
+    },
+    
+    child : "contact.general",
     stop : false,
     sibling : "intro"
   },
@@ -416,7 +441,8 @@ var branches = [
   "awards",
   "work",
   "clients",
-  "team"
+  "team",
+  "contact"
 ];
 
 module.exports = {

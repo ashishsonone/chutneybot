@@ -6,24 +6,6 @@ var utils = require('../utils/utils');
 var countingUtils = require('../utils/counting');
 
 var tree = {
-  "awards.count" : {
-    id : "awards.count",
-    condition : function(session){
-      return session.state.intent.map["award_count"]
-    },
-    
-    reply : function(session){
-      return {
-        reply : "We have won 35 awards in total since our inception",
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
-    },
-    
-    child : null,
-    stop : true,
-    sibling : "awards.name"
-  },
-  
   "awards.name" : {
     id : "awards.name",
     condition : function(session){
@@ -65,6 +47,24 @@ var tree = {
       });
       
       return promise;
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "awards.count"
+  },
+  
+  "awards.count" : {
+    id : "awards.count",
+    condition : function(session){
+      return session.state.intent.map["award_count"]
+    },
+    
+    reply : function(session){
+      return {
+        reply : "We have won 35 awards in total since our inception",
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
     },
     
     child : null,

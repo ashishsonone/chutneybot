@@ -1,42 +1,71 @@
+var suggestionsDb = require('../db/suggestions');
+var contactsDb = require('../db/contacts');
+
+var _ = require('underscore');
+var utils = require('../utils/utils');
+var countingUtils = require('../utils/counting');
+
 //contact branches
 var tree = {
-  "contact.name" : {
-    id : "contact.name",
+  "contact.general" : {
+    id : "contact.general",
     condition : function(session){
-      return true;
+      var location = utils.extractFirstEntityValue(session.state.entities, 'place', []);
+      return !location;
     },
     
     reply : function(session){
-      session.context['name'] = session.state.input;
+      var reply = [
+        {
+          _type : 'text',
+          value : 'Please mention which office contact you need - Mumbai, Gurgaon, or Bengaluru',
+        }
+      ];
+        
       return {
-        reply : "And your phone number please",
-        suggestions : ["8976208510", "+022-23423348"]
-      }
+        reply : reply,
+        suggestions : ["Mumbai", "Bengaluru", "Gurgaon"]
+      };
+      return promise;
     },
     
-    child : "contact.number",
+    child : "contact.office",
     stop : true,
-    sibling : null
+    sibling : "contact.office"
   },
   
-  "contact.number" : {
-    id : "contact.number",
+  "contact.office" : {
+    id : "contact.office",
     condition : function(session){
-      return true;
+      var location = utils.extractFirstEntityValue(session.state.entities, 'place', []);
+      return location;
     },
     
     reply : function(session){
-      session.context['number'] = session.state.input;
-      return {
-        reply : "Thank you " + session.context.name + ", a human from our side will call you soon. What else do you want to know?",
-        suggestions : ["how can you help me", "show your best work", "work done for flipkart", "your top clients"]
-      }
+      var location = utils.extractFirstEntityValue(session.state.entities, 'place', []);
+      
+      var promise = contactsDb.getContact(location);
+      promise = promise.then(function(contactObject){
+        var reply = [
+          {
+            _type : 'text',
+            value : 'There you go',
+          },
+          contactObject
+        ];
+        
+        return {
+          reply : reply,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        };
+      });
+      return promise;
     },
     
     child : null,
     stop : true,
     sibling : null
-  },
+  }
 }
 
 module.exports = {

@@ -11,11 +11,13 @@ var suggestions = [
   "work done for flipkart",
   "gurgaon office work",
   "showcase your portfolio",
-  "show me some of your work",
-  "awards won in 2014",
+  "show me your work",
+  "awards won in 2015",
   "about the team",
   "did you win kyoorious awards",
-  "awards won in abby goafest"
+  "awards won in abby goafest",
+  "get in touch",
+  "mumbai branch contact info"
 ];
 
 module.exports = {
