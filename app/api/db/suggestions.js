@@ -13,7 +13,9 @@ var suggestions = [
   "showcase your portfolio",
   "show me some of your work",
   "awards won in 2014",
-  "about the team"
+  "about the team",
+  "did you win kyoorious awards",
+  "awards won in abby goafest"
 ];
 
 module.exports = {

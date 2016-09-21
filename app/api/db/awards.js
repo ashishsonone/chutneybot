@@ -1,98 +1,61 @@
-var awards = [
-  {
-    _type : 'award-card',
-    name : 'Funny Award',
-    worTitle : 'Airtel Open Network',
-    workSummary : 'A revolutionary ad campaign just after the aatank of the airtel girl was over ;)',
-    dom_int : 'domestic',
-    year : 2015,
-    client : 'airtel',
-    workLink : '<work link>',
-    thumbnailLink : '<thumbnail>',
-    office : 'mumbai',
-    type : ['ad']
-  },
-  {
-    _type : 'award-card',
-    name : 'Small Award',
-    title : 'Flipcart Bacche',
-    summary : 'A new concept of using child actors with voice of adults',
-    dom_int : 'international',
-    year : 2015,
-    client : 'flipkart',
-    link : '<work link>',
-    thumbnail : '<thumbnail>',
-    office : 'mumbai',
-    type : ['ad']
-  },
-  {
-    _type : 'award-card',
-    name : 'Big Award',
-    title : 'Flipcart Bade',
-    summary : 'The old concept of using people with voice of children',
-    dom_int : 'domestic',
-    year : 2014,
-    client : 'flipkart',
-    link : '<work link>',
-    thumbnail : '<thumbnail>',
-    office : 'gurgaon',
-    type : ['ad']
-  },
-  {
-    _type : 'award-card',
-    name : 'Pee Gaya',
-    title : 'Pepsi Thi Pee Gaya',
-    summary : 'Good Ad using collge students',
-    dom_int : 'domestic',
-    year : 2010,
-    client : 'pepsi',
-    link : '<work link>',
-    thumbnail : '<thumbnail>',
-    office : 'banglore',
-    type : ['ad']
-  }
-];
+var AwardModel = require('../models/award').model;
+
+var awardTypeMapping = {
+  "innovative use of technology" : "Innovative use of Technology",
+  "branded microsite": "Branded Microsite",
+  "mobile abby" : "Mobile ABBY",
+  "film" : "Film",
+  "creative abby" : "Creative ABBY",
+  "use of ugc" : "Use of UGC",
+  "innovative use of platform" : "Innovative use of platform"
+};
 
 function getAwards(limit, skip){
   if(!skip){
     skip = 0;
   }
   
-  var result = [];
-  for(var i=skip; i<awards.length; i++){
-    if(i >= skip + limit){
-      break;
-    }
-    var award = awards[i];
-    result.push(award);
-  }
-  return JSON.parse(JSON.stringify(result));
+  var promise = AwardModel.find({
+  }, {
+    _id : false,
+  }).limit(limit).skip(skip).exec();
+  
+  return promise;
 }
 
 function getAwardsForYear(year){
-  var result = [];
-  for(var i in awards){
-    var award = awards[i];
-    if(award.year == year){
-      result.push(award);
-    }
-  }
-  return JSON.parse(JSON.stringify(result));
+  var promise = AwardModel.find({
+    year : year
+  }, {
+    _id : false,
+  }).limit(5).exec();
+  
+  return promise;
 }
 
 function getAwardsDomInt(dom_int){
-  var result = [];
-  for(var i in awards){
-    var award = awards[i];
-    if(award.dom_int == dom_int){
-      result.push(award);
-    }
-  }
-  return JSON.parse(JSON.stringify(result));
+  var promise = AwardModel.find({
+    dom_int : dom_int
+  }, {
+    _id : false,
+  }).limit(5).exec();
+  
+  return promise;
+}
+
+function getAwardsByName(name){
+  var promise = AwardModel.find({
+    nameId : name
+  }, {
+    _id : false,
+  }).limit(5).exec();
+  
+  return promise;
 }
 
 module.exports = {
   getAwards : getAwards,
   getAwardsForYear : getAwardsForYear,
-  getAwardsDomInt : getAwardsDomInt
+  getAwardsDomInt : getAwardsDomInt,
+  getAwardsByName : getAwardsByName
 };

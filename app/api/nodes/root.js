@@ -146,7 +146,7 @@ var tree = {
     reply : function(session){
       return {
         reply : "Dentsu Inc",
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
+        suggestions : ["what is dentsu", "what does webchutney do"]
       }
     },
     
