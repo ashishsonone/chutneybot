@@ -393,7 +393,7 @@ var tree = {
         },
         {
           _type : 'text',
-          value : "Anyway, why don’t you hit the 'Talk to a human' option? That should be a quick-fix!",
+          value : "Anyway, why don’t you hit the 'contact details' option? That should be a quick-fix!",
         },
         {
           _type : 'text',
@@ -431,7 +431,7 @@ var tree = {
         }
       ];
       
-      var suggestions = ["Talk to a human"];
+      var suggestions = ["contact details"];
       suggestions = suggestions.concat(_.sample(suggestionsDb.suggestions, 3));
       return {
         reply : output,
