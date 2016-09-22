@@ -22,7 +22,7 @@ var tree = {
       promise = promise.then(function(list){
         var reply = [{
           _type : 'text',
-          value : 'Clients for which our' + location + ' office has worked for :',
+          value : 'Clients for which our ' + location + ' office has worked for :',
         }];
 
         var workReply = {
