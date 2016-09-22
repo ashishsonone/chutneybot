@@ -1,4 +1,8 @@
 var RSVP = require('rsvp');
+var _ = require('underscore');
+
+var utils = require('./utils/utils');
+var suggestionsDb = require('./db/suggestions');
 
 function handleMenu(session, menuItem){
   session.activeNode = null; //reset the dialog conversation
@@ -16,10 +20,8 @@ function handleMenu(session, menuItem){
   var promise = RSVP.resolve(true);
   promise = promise.then(function(){
     var card1 = {
-      _type : 'people-card',
-      name : 'Siddharth Rao',
-      position : 'CEO',
-      contact : 'You dont contact Sid, he contacts you'
+      _type : 'disclaimer-card',
+      text : 'MENU FEAUTURE UNDER CONSTRUCTION'
     };
     
     var result = {
@@ -29,7 +31,7 @@ function handleMenu(session, menuItem){
     
     session.state.output = 
     session.state.output.concat([result]);
-    session.state.suggestions = ['What is dentsu'];
+    session.state.suggestions = _.sample(suggestionsDb.suggestions, 4);
     return session;
   });
   

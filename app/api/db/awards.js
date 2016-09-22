@@ -18,6 +18,7 @@ function getAwards(limit, skip){
   var promise = AwardModel.find({
   }, {
     _id : false,
+    nameId : false
   }).limit(limit).skip(skip).exec();
   
   return promise;
@@ -28,6 +29,7 @@ function getAwardsForYear(year){
     year : year
   }, {
     _id : false,
+    nameId : false
   }).limit(5).exec();
   
   return promise;
@@ -38,6 +40,7 @@ function getAwardsDomInt(dom_int){
     dom_int : dom_int
   }, {
     _id : false,
+    nameId : false
   }).limit(5).exec();
   
   return promise;
@@ -48,6 +51,7 @@ function getAwardsByName(name){
     nameId : name
   }, {
     _id : false,
+    nameId : false
   }).limit(5).exec();
   
   return promise;

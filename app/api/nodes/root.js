@@ -22,7 +22,7 @@ var tree = {
         },
         {
           _type : 'text',
-          value : "To see what kind of questions you can ask look/tap at suggestions shown(in green) just below the input box. Or you can click on a menu item for a guided tour"
+          value : "To see what kind of questions you can ask look/tap at suggestions shown(in green) just below the input box. Menu items don't work as of now."
         }
       ]
       return {
