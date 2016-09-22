@@ -256,7 +256,7 @@ var tree = {
     
     reply : function(session){
       return {
-        reply : "Look at the headlines we make every now and then",
+        reply : "Look at the headlines we make every now and then. <to do : show headlines>",
         suggestions : _.sample(suggestionsDb.suggestions, 4)
       }
     },
@@ -389,7 +389,15 @@ var tree = {
       var output = [
         {
           _type : "text",
-          value : "I am unable to understand you. Please rephrase your query. In the mean time, look at these pics"
+          value : "Uhm, you see, there might be 50 shades of grey, but the shades of my grey matter are fairly limited. Now that was a smart one for a growing bot, wasn’t it?"
+        },
+        {
+          _type : 'text',
+          value : "Anyway, why don’t you hit the 'Talk to a human' option? That should be a quick-fix!",
+        },
+        {
+          _type : 'text',
+          value : 'Meanwhile have a look at these fun pics'
         },
         {
           _type : "cards",
@@ -422,9 +430,12 @@ var tree = {
           ]
         }
       ];
+      
+      var suggestions = ["Talk to a human"];
+      suggestions = suggestions.concat(_.sample(suggestionsDb.suggestions, 3));
       return {
         reply : output,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
+        suggestions : suggestions
       }
     },
     
