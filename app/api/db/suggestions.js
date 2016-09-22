@@ -6,6 +6,8 @@ var suggestions = [
   "culture at webchutney",
   "chutney news",
   "whats new ?",
+  "clientele",
+  "mumbai office clients",
   "how old is chutney",
   "who owns chutney",
   "work done for flipkart",

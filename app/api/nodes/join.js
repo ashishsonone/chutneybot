@@ -35,7 +35,7 @@ var tree = {
         },
         {
           _type : 'text',
-          value : 'Ready to join? Reply with - yes or no'
+          value : 'Ready to join? Just give a nod - yes or no'
         }
       ];
       
