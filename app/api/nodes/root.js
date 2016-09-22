@@ -235,7 +235,7 @@ var tree = {
           url : 'https://www.youtube.com/watch?v=I_-6YxaDiTk',
           title : 'the swag - dentsu webchutney'
         }
-      ]
+      ];
       return {
         reply : reply,
         suggestions : _.sample(suggestionsDb.suggestions, 4)
@@ -292,6 +292,21 @@ var tree = {
     },
     
     child : "contact.general",
+    stop : false,
+    sibling : "join"
+  },
+  
+  "join" : {
+    id : "join",
+    condition : function(session){
+      return session.state.intent.map["join"];
+    },
+    
+    reply : function(session){
+      return null;
+    },
+    
+    child : "join.root",
     stop : false,
     sibling : "intro"
   },
@@ -442,7 +457,8 @@ var branches = [
   "work",
   "clients",
   "team",
-  "contact"
+  "contact",
+  "join"
 ];
 
 module.exports = {

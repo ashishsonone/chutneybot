@@ -1,9 +1,16 @@
 'use strict'
 
 var nodemailer = require('nodemailer');
+var util = require('util');
 
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport('smtp://ashishsonone@hotmail.com:Microsoft%400@smtp.live.com:587');
+
+var jobHtmlTemplate = "Name : %s<br>" 
+    + "Position : %s<br>"
+    + "Branch : %s<br>"
+    + "Email : %s <br>"
+    + "Phone : %s <br>"
 
 function sendMail(to, subject, text){// setup e-mail data with unicode symbols
   var mailOptions = {
@@ -14,17 +21,26 @@ function sendMail(to, subject, text){// setup e-mail data with unicode symbols
       html: text // html body
   };
 
+  console.log('[Mailer] : transporter request made');
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function(error, info){
       if(error){
           return console.log(error);
       }
-      console.log('Message sent: ' + info.response);
+      console.log('[Mailer] Message sent: ' + info.response);
   });
 }
 
+function sendCandidateApplicationMail(context){
+  var subject = "[Bot] Job Application";
+  
+  var html = util.format(jobHtmlTemplate, context.name, context.position, context.branch, context.email, context.phone);
+  sendMail('ashishsonone009@hotmail.com', '[Bot] Job Application', "Name : Ashish \n Position : Web Developer \n Branch : Mumbai");
+};
+
 module.exports = {
-  sendMail : sendMail
+  sendMail : sendMail,
+  sendCandidateApplicationMail : sendCandidateApplicationMail
 };
 
 //usage

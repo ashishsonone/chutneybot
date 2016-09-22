@@ -76,6 +76,9 @@ function executeNode(session, node){
   promise = promise.then(function(out){
     //console.log(node.id + " out=%j", out);
     
+    var overrideChild; //override default 'child' node
+    var overrideStop; //override default 'stop' boolean
+    
     if(out != null && out.reply != null){
       console.log(node.id + ": non-null reply came");
       //assume out.reply & out.suggestions non-null
@@ -94,14 +97,17 @@ function executeNode(session, node){
       //concat reply to state.output
       session.state.output = session.state.output.concat(out.reply);
       session.state.suggestions = out.suggestions;
+      
+      overrideChild = out.child;
+      overrideStop = out.stop;
     }
     else{
       //this means, was just a pointer to the child
       console.log(node.id + ":early exit to child " + node.child);
     }
     //set further flow thru node's child
-    session.state.nextNode = node.child;
-    session.state.stop = node.stop;
+    session.state.nextNode = overrideChild || node.child;
+    session.state.stop = overrideStop || node.stop;
     
     return session;
   });
@@ -115,13 +121,18 @@ function chat(session, input){
     nodesVisited : [],
     output : [],
     suggestions : [],
-    ts : []
+    ts : [],
+    intent : {
+      map : {},
+      arr : []
+    },
+    entities : {}
   };
   
   session.state.ts.push(new Date().getTime());
   
   var promise = RSVP.resolve(true);
-  if(input){
+  if(input && !session.pauseWit){ //pauseWit flag not set
     console.log("chat : witAnalyze");
     promise = dialogUtils.witAnalyze(input);
     promise = promise.then(function(result){
@@ -133,7 +144,8 @@ function chat(session, input){
     });
   }
   else{
-    console.log("chat : start no input");
+    console.log("chat : start no input : pauseWit %j", session.pauseWit);
+    session.pauseWit = false;
     promise = RSVP.resolve(session);
   }
   

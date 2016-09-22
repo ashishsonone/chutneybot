@@ -17,7 +17,9 @@ var suggestions = [
   "did you win kyoorious awards",
   "awards won in abby goafest",
   "get in touch",
-  "mumbai branch contact info"
+  "mumbai branch contact info",
+  "join webchutney",
+  "available openings"
 ];
 
 module.exports = {
