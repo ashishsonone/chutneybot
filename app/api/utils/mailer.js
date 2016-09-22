@@ -35,7 +35,7 @@ function sendCandidateApplicationMail(context){
   var subject = "[Bot] Job Application";
   
   var html = util.format(jobHtmlTemplate, context.name, context.position, context.branch, context.email, context.phone);
-  sendMail('ashishsonone009@hotmail.com', '[Bot] Job Application', "Name : Ashish \n Position : Web Developer \n Branch : Mumbai");
+  sendMail('ashishsonone009@hotmail.com', '[Bot] Job Application', html);
 };
 
 module.exports = {
