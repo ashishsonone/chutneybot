@@ -104,7 +104,7 @@ var tree = {
         workList = workDb.present(workList);
         var reply = [{
           _type : 'text',
-          value : "Here is a part of our portfolio"
+          value : "Awesome! I'll show you what we've been upto recently. But you can also see our award winners or work for specific brands from the menu at the bottom"
         }];
 
         var workReply = {

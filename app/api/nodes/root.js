@@ -308,6 +308,33 @@ var tree = {
     
     child : "join.root",
     stop : false,
+    sibling : "services"
+  },
+  
+  "services" : {
+    id : "services",
+    condition : function(session){
+      return session.state.intent.map["services"];
+    },
+    
+    reply : function(session){
+      return {
+        reply : [
+          {
+            _type : 'text',
+            value : "We’re a digitally driven communication agency. How people behave in a digital world is at the heart of our thinking. What we deliver are tech-enabled solutions across strategy, content and experiences. NOT onion rawa dosa or tundey kabab."
+          },
+          {
+            _type : 'text',
+            value : "Ok? Ok."
+          }
+        ],
+        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      }
+    },
+    
+    child : null,
+    stop : true,
     sibling : "intro"
   },
   
