@@ -4,13 +4,13 @@ var Schema = mongoose.Schema;
 var WorkSchema = Schema({
   _type : String,
   
-  nick : String,
+  nick : String, //id required to refer by award
   
   title : String,
   summary : String,
   
   client : String,
-  clientId : String,
+  clientId : String, //id required company
   
   link : String,
   

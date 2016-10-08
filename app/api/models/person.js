@@ -5,10 +5,10 @@ var PersonSchema = Schema({
   _type : String,
   
   name : String,
-  nameId : String,
+  nameId : String, //id required
   
   position : String,
-  positionId : String,
+  positionId : String, //id required
   
   office : String,
   email : String,

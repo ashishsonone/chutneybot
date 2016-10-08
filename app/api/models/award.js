@@ -5,15 +5,15 @@ var AwardSchema = Schema({
   _type : String,
   
   name : String,
-  nameId : String,
+  nameId : String, //id required (query by award name)
   
   workNick : String,
   
   dom_int : String,
   year : String,
-  clientId : String,
+  clientId : String, //id required (for company entitiy)
   
-  type : [String],
+  type : [String], //just use the original string, no mapping required
   office : String,
 });
 

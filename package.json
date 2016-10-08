@@ -17,6 +17,7 @@
     "nodemailer": "^2.6.4",
     "rsvp": "^3.2.1",
     "shortid": "^2.2.6",
+    "sprintf-js": "^1.0.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

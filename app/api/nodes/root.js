@@ -462,7 +462,12 @@ var tree = {
       var suggestions = ["contact details"];
       suggestions = suggestions.concat(_.sample(suggestionsDb.suggestions, 3));
       
-      var promise = responsesDb.getRandomResponse('garbage');
+      var dict = {
+        name : 'buddy',
+        self : 'botney'
+      };
+      
+      var promise = responsesDb.getRandomResponse('garbage', dict);
       
       promise = promise.then(function(newOutput){
         if(newOutput){
