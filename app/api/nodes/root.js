@@ -2,6 +2,7 @@
 var suggestionsDb = require('../db/suggestions');
 var aboutusDb = require('../db/aboutus');
 var peopleDb = require('../db/people');
+var responsesDb = require('../db/responses');
 
 var utils = require('../utils/utils');
 
@@ -460,10 +461,20 @@ var tree = {
       
       var suggestions = ["contact details"];
       suggestions = suggestions.concat(_.sample(suggestionsDb.suggestions, 3));
-      return {
-        reply : output,
-        suggestions : suggestions
-      }
+      
+      var promise = responsesDb.getRandomResponse('garbage');
+      
+      promise = promise.then(function(newOutput){
+        if(newOutput){
+          output = newOutput;
+        }
+        return {
+          reply : output,
+          suggestions : suggestions
+        };
+      });
+      
+      return promise;
     },
     
     child : null,
