@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="casesApp">
+<head>
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+  <!-- SCRIPTS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="../js/cases_app.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/cases.css">
+</head>
+  
+<body ng-controller="caseController">
+  <!-- MAIN CONTENT AND INJECTED VIEWS -->
+  <div class="container" id="main">
+    <!-- angular templating -->
+    <!-- this is where content will be injected -->
+    <div class="col-xs-12" ng-view></div>
+
+  </div>
+</body>

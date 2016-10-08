@@ -1,0 +1,8 @@
+.del {
+  opacity:0.0;
+}
+
+.del:hover {
+  color : red;
+  opacity:1.0;
+}

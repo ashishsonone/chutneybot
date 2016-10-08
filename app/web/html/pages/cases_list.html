@@ -1,0 +1,87 @@
+<h1>Cases</h1>
+
+<div class="row" id="notification">
+  <h5>Last result : {{toastText}}</h5>
+</div>
+
+<div class="row" style="margin : 20px; padding : 10px;">
+  <div class="form-group form-group-sm">
+    <div class="col-xs-3"></div>
+    <label class="col-xs-2 control-label">Search by Name</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" ng-model="search.name">
+    </div>
+    <div class="col-xs-3"></div>
+  </div>
+</div>
+
+<div class="row" style="margin : 20px; padding : 10px; border : 1px solid; border-color: gray; border-radius: 25px;" ng-repeat="kase in kases| filter:search">
+  <div class="col-xs-10">
+    <form class="form-horizontal">
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="kase.name" ng-disabled="!kase._edit">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="kase.description" ng-disabled="!kase._edit">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Variables</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="kase.variables" ng-disabled="!kase._edit">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-xs-1"></div>
+  <div class="col-xs-1">
+    <i ng-if="!kase._edit" class="fa fa-pencil-square-o fa-3x" ng-click="editKase(kase)"><br><br></i>
+    <h3 class="del" ng-if="!kase._edit" ng-click="deleteKase(kase)">DEL</h3>
+    <i ng-if="kase._edit" class="fa fa-floppy-o fa-3x" ng-click="saveKase(kase)"><br></i>
+    <i ng-if="kase._edit" class="fa fa-times fa-3x" ng-click="cancelKase(kase)"></i>
+  </div>
+  
+</div>
+
+<br>
+<br>
+
+<div style="margin : 20px; padding: 5px;" class="row">
+  <h3>New Case</h3>
+  <i ng-if="!addMode" style='color:green' class="fa fa-plus fa-4x" ng-click="addNewKase()"></i>
+</div>
+
+<div ng-if="addMode" class="row" style="margin : 20px; padding: 5px; border : 2px solid; border-color: green; border-radius: 25px;">
+  <div class="col-xs-10">
+    <form class="form-horizontal">
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="newKase.name">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="newKase.description">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Variables</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="newKase.variables">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-xs-1"></div>
+  <div class="col-xs-1">
+    <i class="fa fa-floppy-o fa-3x" ng-click="saveNewKase(newKase)"><br></i>
+    <i class="fa fa-times fa-3x" ng-click="cancelNewKase()"></i>
+  </div>
+</div>

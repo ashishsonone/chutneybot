@@ -2,7 +2,6 @@
 var express = require('express');
 var shortid = require('shortid');
 var RSVP = require('rsvp');
-
 var router = express.Router();
 
 var dialog = require('./dialog');
@@ -10,6 +9,8 @@ var menu = require('./menu');
 
 var LogModel = require('./models/log').model;
 var SessionModel = require('./models/session').model;
+
+var objectsRouter = require('./routes/main').router;
 
 /*
   will contain the current state of the conversation
@@ -134,5 +135,7 @@ router.post('/chat', function(req, res){
   });
 
 });
+
+router.use('/obj/', objectsRouter);
 
 module.exports.router = router;
