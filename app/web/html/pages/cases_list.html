@@ -4,6 +4,43 @@
   <h5>Last result : {{toastText}}</h5>
 </div>
 
+<div style="margin : 20px; padding: 5px;" class="row">
+  <h3>New Case  <i ng-if="!addMode" style='color:green' class="fa fa-plus fa-2x" ng-click="addNewKase()"></i></h3>
+</div>
+
+<div ng-if="addMode" class="row" style="margin : 20px; padding: 5px; border : 2px solid; border-color: green; border-radius: 25px;">
+  <div class="col-xs-10">
+    <form class="form-horizontal">
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="newKase.name">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <textarea rows="2" class="form-control" ng-model="newKase.description"/>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label">Variables</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ng-model="newKase.variables">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-xs-1"></div>
+  <div class="col-xs-1">
+    <i class="fa fa-floppy-o fa-3x" ng-click="saveNewKase(newKase)"><br></i>
+    <i class="fa fa-times fa-3x" ng-click="cancelNewKase()"></i>
+  </div>
+</div>
+
+<br>
+<br>
+
 <div class="row" style="margin : 20px; padding : 10px;">
   <div class="form-group form-group-sm">
     <div class="col-xs-3"></div>
@@ -27,7 +64,7 @@
       <div class="form-group form-group-sm">
         <label class="col-sm-2 control-label">Description</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" ng-model="kase.description" ng-disabled="!kase._edit">
+          <textarea rows="2" class="form-control" ng-model="kase.description" ng-disabled="!kase._edit"/>
         </div>
       </div>
       <div class="form-group form-group-sm">
@@ -46,42 +83,4 @@
     <i ng-if="kase._edit" class="fa fa-times fa-3x" ng-click="cancelKase(kase)"></i>
   </div>
   
-</div>
-
-<br>
-<br>
-
-<div style="margin : 20px; padding: 5px;" class="row">
-  <h3>New Case</h3>
-  <i ng-if="!addMode" style='color:green' class="fa fa-plus fa-4x" ng-click="addNewKase()"></i>
-</div>
-
-<div ng-if="addMode" class="row" style="margin : 20px; padding: 5px; border : 2px solid; border-color: green; border-radius: 25px;">
-  <div class="col-xs-10">
-    <form class="form-horizontal">
-      <div class="form-group form-group-sm">
-        <label class="col-sm-2 control-label">Name</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" ng-model="newKase.name">
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" ng-model="newKase.description">
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-2 control-label">Variables</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" ng-model="newKase.variables">
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="col-xs-1"></div>
-  <div class="col-xs-1">
-    <i class="fa fa-floppy-o fa-3x" ng-click="saveNewKase(newKase)"><br></i>
-    <i class="fa fa-times fa-3x" ng-click="cancelNewKase()"></i>
-  </div>
 </div>
