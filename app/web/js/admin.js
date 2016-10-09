@@ -277,7 +277,7 @@ casesApp.config(function($routeProvider) {
             headerResPath : "/api/obj/cases/" + kaseId,
             
             idKey : '_id',
-            searchField : null,
+            searchField : 'case',
             resPath : "/api/obj/responses/?case=" + kaseId,
             mapping : {
               case : {
