@@ -459,6 +459,9 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
   };
   
   $scope.pushToArray = function(arr, newItem){
+    if(!newItem){
+      return;
+    }
     arr.push(newItem.content);
     newItem.content = '';
   };
