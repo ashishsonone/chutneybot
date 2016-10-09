@@ -28,7 +28,11 @@ casesApp.config(function($routeProvider) {
                 type : 'line',
                 label : 'Variables'
               }
-            }
+            },
+            
+            externalLinkBase : '#cases/',
+            externalLinkKey : 'name',
+            externalLinkLabel : 'Edit Bot Responses'
           }
           return c;
         }
@@ -317,6 +321,10 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
   $scope.headerMapping = config.headerMapping;
   $scope.headerObject = null;
   $scope.HEAD_RES_URL = $scope.BASE_URL + config.headerResPath;
+  
+  $scope.externalLinkBase = config.externalLinkBase;
+  $scope.externalLinkKey = config.externalLinkKey;
+  $scope.externalLinkLabel = config.externalLinkLabel;
   
   $scope.toastText = "";
   $scope.toastError = false;

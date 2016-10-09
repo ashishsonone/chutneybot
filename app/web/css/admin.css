@@ -10,3 +10,7 @@
 .pointer {
   cursor: pointer
 }
+
+.pointer:hover {
+  color : blue
+}

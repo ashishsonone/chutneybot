@@ -21,7 +21,7 @@
 <div style="margin : 10px; padding: 5px;" class="row">
   <div class="col-xs-5"></div>
   <div class="col-xs-2">
-    <h3><i ng-if="!addMode" style='color:green' class="fa fa-plus fa-2x pointer" ng-click="addNewKase()"></i></h3>
+    <h3><i ng-if="!addMode" style='color:green' class="fa fa-plus fa-2x pointer" ng-click="addNewKase()" data-toggle="tooltip" title="Create New"></i></h3>
   </div>
   <div class="col-xs-5"></div>
 </div>
@@ -40,9 +40,9 @@
   </div>
   <div class="col-xs-1"></div>
   <div class="col-xs-1">
-    <i class="fa fa-floppy-o fa-2x pointer" ng-click="saveNewKase(newKase)"></i>
+    <i class="fa fa-floppy-o fa-2x pointer" ng-click="saveNewKase(newKase)" data-toggle="tooltip" title="Save"></i>
     <div ng-if="!kase._edit"><br></div>
-    <i class="fa fa-times fa-2x pointer" ng-click="cancelNewKase()"></i>
+    <i class="fa fa-times fa-2x pointer" ng-click="cancelNewKase()" data-toggle="tooltip" title="Cancel"></i>
   </div>
 </div>
 
@@ -76,17 +76,24 @@
           <textarea ng-if="value.type=='paragraph'" rows="2" class="form-control" ng-model="kase[key]" ng-disabled="!kase._edit"/>
         </div>
       </div>
+      <div class="form-group form-group-sm" ng-if="externalLinkKey">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+          <a ng-href="{{externalLinkBase}}{{kase[externalLinkKey]}}"><b>{{externalLinkLabel}}</b></a>
+        </div>
+        <div class="col-xs-4"></div>
+      </div>
     </form>
   </div>
   <div class="col-xs-1"></div>
   <div class="col-xs-1">
-    <i ng-if="!kase._edit" class="fa fa-pencil-square-o fa-2x pointer" ng-click="editKase(kase)"></i>
+    <i ng-if="!kase._edit" class="fa fa-pencil-square-o fa-2x pointer" ng-click="editKase(kase)" data-toggle="tooltip" title="Edit"></i>
     <div ng-if="!kase._edit"><br></div>
-    <i ng-if="!kase._edit" style="color:red" class="fa fa-trash-o fa-2x del pointer" ng-click="deleteKase(kase)"><br></i>
+    <i ng-if="!kase._edit" style="color:red" class="fa fa-trash-o fa-2x del pointer" ng-click="deleteKase(kase)" data-toggle="tooltip" title="Delete"></i>
     
-    <i ng-if="kase._edit" class="fa fa-floppy-o fa-2x pointer" ng-click="saveKase(kase)"><br></i>
+    <i ng-if="kase._edit" class="fa fa-floppy-o fa-2x pointer" ng-click="saveKase(kase)" data-toggle="tooltip" title="Save"><br></i>
     <div ng-if="kase._edit"><br></div>
-    <i ng-if="kase._edit" class="fa fa-times fa-2x pointer" ng-click="cancelKase(kase)"></i>
+    <i ng-if="kase._edit" class="fa fa-times fa-2x pointer" ng-click="cancelKase(kase)" data-toggle="tooltip" title="Cancel"></i>
   </div>
   
 </div>
