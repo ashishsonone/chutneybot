@@ -10,7 +10,9 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
   
   $scope.RES_URL = $scope.BASE_URL + config.resPath;
   $scope.RES_PARAMS = config.resParams;
-  
+
+  $scope.default = config.default || {}; //default values for certain fields
+
   $scope.headerMapping = config.headerMapping;
   $scope.headerObject = null;
   $scope.HEAD_RES_URL = $scope.BASE_URL + config.headerResPath;
@@ -34,6 +36,10 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
       if($scope.mapping[k].type == 'array-paragraph'){
         $scope.newKase[k] = [];
       }
+    }
+    
+    for(var k in $scope.default){
+      $scope.newKase[k] = $scope.default[k];
     }
   };
   
