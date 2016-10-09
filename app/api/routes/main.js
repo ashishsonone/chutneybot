@@ -26,7 +26,7 @@ var SORT_MAP = {
   'person' : 'name',
   'award' : 'name',
   'work' : 'nick',
-  'client' : 'name'
+  'client' : 'name',
 };
 
 function post(type, req, res){
@@ -78,11 +78,14 @@ function get(type, req, res){
     limit = req.query.limit;
   }
   
+  
   limit = parseInt(limit);
   
   var findQuery = {};
-  var gte = req.query.gte;
-  var lt = req.query.lt;
+  //for 'response' type - special
+  if(req.query.case){
+    findQuery.case = req.query.case;
+  }
   
   var sort = {};
   sort[SORT_MAP[type]] = 1;

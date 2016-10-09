@@ -251,6 +251,49 @@ casesApp.config(function($routeProvider) {
         }
       }
     })
+  
+    .when('/cases/:case', {
+      templateUrl : 'pages/cases_list.html',
+      controller  : 'caseController',
+      resolve : {
+        config : function($route){
+          var kaseId = $route.current.params.case;
+          var c = {
+            title : "Manage responses for : ",
+            headerMapping :{
+              name : {
+                type : 'line',
+                label : 'Case'
+              },
+              description : {
+                type : 'paragraph',
+                label : 'Description'
+              },
+              variables : {
+                type : 'line',
+                label : 'Variables'
+              }
+            },
+            headerResPath : "/api/obj/cases/" + kaseId,
+            
+            idKey : '_id',
+            searchField : null,
+            resPath : "/api/obj/responses/?case=" + kaseId,
+            mapping : {
+              case : {
+                type : 'line',
+                label : 'Case Name'
+              },
+              output : {
+                type : 'array-paragraph',
+                label : 'Output Response'
+              }
+            }
+          }
+          return c;
+        }
+      }
+    })
 
     // route for the about page
     .when('/:other', {
@@ -270,6 +313,10 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
   $scope.mapping = config.mapping;
   
   $scope.RES_URL = $scope.BASE_URL + config.resPath;
+  
+  $scope.headerMapping = config.headerMapping;
+  $scope.headerObject = null;
+  $scope.HEAD_RES_URL = $scope.BASE_URL + config.headerResPath;
   
   $scope.toastText = "";
   $scope.toastError = false;
@@ -415,7 +462,36 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
     });
   };
   
+  $scope.fetchHeaderObject = function(){
+    var url = $scope.HEAD_RES_URL;
+    console.log("header url : " + url);
+    
+    $scope.loading = true;
+    $.ajax({
+      url : url,
+      type : "GET",
+      success: function(data, textStatus, xhr) {
+        $scope.loading = false;
+        $scope.headerObject = data;
+        
+        $scope.showToast("Success fetching header object" , false);
+        $scope.$apply();
+      },
+      error: function(xhr, textStatus, err) {
+        $scope.loading = false;
+        $scope.showToast("Failure fetching header object", true);
+        $scope.$apply();
+      }
+    });
+  };
+  
+  if($scope.headerMapping){
+    console.log("fetching header");
+    $scope.fetchHeaderObject();
+  }
+  
   $scope.fetchCases();
+
 }]);
 
 casesApp.controller('responseController', function($scope) {
