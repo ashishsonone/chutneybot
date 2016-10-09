@@ -17,6 +17,7 @@ app.use(bodyParser.json()); // parse application/json
 app.use(morgan('dev')); //use the new format
 
 app.use('/js', express.static(__dirname + "/web/js"));
+app.use('/fonts', express.static(__dirname + "/web/fonts"));
 app.use('/web', express.static(__dirname + "/web/html"));
 app.use('/css', express.static(__dirname + "/web/css"));
 

@@ -6,3 +6,7 @@
   color : red;
   opacity:1.0;
 }
+
+.pointer {
+  cursor: pointer
+}

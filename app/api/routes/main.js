@@ -1,15 +1,32 @@
 var CaseModel = require('../models/case').model;
 var ResponseModel = require('../models/response').model;
+var PersonModel = require('../models/person').model;
+var AwardModel = require('../models/award').model;
+var WorkModel = require('../models/work').model;
+var ClientModel = require('../models/client').model;
 
 var router = require('express').Router();
 
 var MODEL_MAP = {
   'case' : CaseModel,
   'response' : ResponseModel,
+  'person' : PersonModel,
+  'award' : AwardModel,
+  'work' : WorkModel,
+  'client' : ClientModel
 };
 
 var ID_MAP = {
   'case' : 'name',
+};
+
+var SORT_MAP = {
+  'case' : 'name',
+  'response' : null,
+  'person' : 'name',
+  'award' : 'name',
+  'work' : 'nick',
+  'client' : 'name'
 };
 
 function post(type, req, res){
@@ -56,7 +73,7 @@ function put(type, req, res){
 function get(type, req, res){
   var model = MODEL_MAP[type];
   
-  var limit = 20;
+  var limit = 50;
   if(req.query.limit){
     limit = req.query.limit;
   }
@@ -67,9 +84,12 @@ function get(type, req, res){
   var gte = req.query.gte;
   var lt = req.query.lt;
   
+  var sort = {};
+  sort[SORT_MAP[type]] = 1;
   var promise = model
     .find(findQuery)
     .limit(limit)
+    .sort(sort)
     .exec();
   promise = promise.then(function(result){
     res.json(result);
@@ -147,6 +167,10 @@ function genRoutes(apiPath, esTypeName, router){
 
 genRoutes('/cases', 'case', router);
 genRoutes('/responses', 'response', router);
+genRoutes('/people', 'person', router);
+genRoutes('/awards', 'award', router);
+genRoutes('/work', 'work', router);
+genRoutes('/clients', 'client', router);
 
 module.exports = {
   router : router

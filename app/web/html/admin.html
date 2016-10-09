@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="casesApp">
+<head>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/font-awesome.min.css">
+
+  <!-- SCRIPTS -->
+  <script src="../js/jquery-2.2.4.min.js"></script>
+  <script src="../js/angular.min.js"></script>
+  <script src="../js/angular-route.min.js"></script>
+  <script src="../js/admin.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/admin.css">
+</head>
+  
+<body>
+  <header>
+    <nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Botney Admin Panel</a>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="#cases"><i class="fa fa-question-circle-o"></i> Cases</a></li>
+            <li><a href="#people"><i class="fa fa-users"></i> People</a></li>
+            <li><a href="#awards"><i class="fa fa-trophy"></i> Awards</a></li>
+            <li><a href="#work"><i class="fa fa-briefcase"></i> Work</a></li>
+            <li><a href="#clients"><i class="fa fa-pied-piper"></i> Clients</a></li>
+        </ul>
+    </div>
+    </nav>
+  </header>
+  
+  <!-- MAIN CONTENT AND INJECTED VIEWS -->
+  <div class="container" id="main">
+    <!-- angular templating -->
+    <!-- this is where content will be injected -->
+    <div class="col-xs-12" ng-view></div>
+
+  </div>
+</body>

@@ -11,6 +11,7 @@ var AwardSchema = Schema({
   
   dom_int : String,
   year : String,
+  client : String,
   clientId : String, //id required (for company entitiy)
   
   type : [String], //just use the original string, no mapping required

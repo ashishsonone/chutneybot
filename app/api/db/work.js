@@ -35,6 +35,7 @@ function getWork(limit, skip){
   var promise = WorkModel.find({
   }, {
     _id : false,
+    __v : false,
     clientId : false,
   }).limit(limit).skip(skip).exec();
   
@@ -46,6 +47,7 @@ function getWorkForCompany(company){
     clientId : company
   }, {
     _id : false,
+    __v : false,
     clientId : false,
   }).limit(5).exec();
   
@@ -57,6 +59,7 @@ function getWorkByOffice(office){
     office : office
   }, {
     _id : false,
+    __v : false,
     clientId : false,
   }).limit(5).exec();
   

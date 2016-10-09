@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PersonSchema = Schema({
-  _type : String,
-  
   name : String,
   nameId : String, //id required
   
