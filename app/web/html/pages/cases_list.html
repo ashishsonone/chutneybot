@@ -32,8 +32,33 @@
       <div class="form-group form-group-sm" ng-repeat="(key, value) in mapping">
         <label class="col-sm-2 control-label">{{value.label}}</label>
         <div class="col-sm-10">
+          
+          <!-- line type -->
           <input ng-if="value.type=='line'" type="text" class="form-control" ng-model="newKase[key]">
+          
+          <!-- paragraph type -->
           <textarea ng-if="value.type=='paragraph'" rows="2" class="form-control" ng-model="newKase[key]"/>
+          
+          <!-- items of array -->
+          <div ng-if="value.type=='array-paragraph'" class="row" ng-repeat="res in newKase[key] track by $index">
+            <div class="col-xs-8">
+              <textarea rows="2" class="form-control" ng-model="res"/>
+            </div>
+            <div class="col-xs-4">
+              <i class="fa fa-trash-o pointer" ng-click="removeFromArray(newKase[key], res)" data-toggle="tooltip" title="Remove"></i>
+            </div>
+          </div>
+          
+          <!-- add new entry in array -->
+          <div ng-if="value.type=='array-paragraph'" class="row">
+            <div class="col-xs-8">
+              <textarea rows="2" class="form-control" ng-model=
+"newItem.content"/>
+            </div>
+            <div class="col-xs-4">
+              <button type="button" class="btn btn-info btn-sm" ng-click="pushToArray(newKase[key], newItem)">Add</button>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -71,10 +96,35 @@
       <div class="form-group form-group-sm" ng-repeat="(key, value) in mapping" ng-if="(kase._edit || !value.hide)">
         <label class="col-sm-2 control-label">{{value.label}}</label>
         <div class="col-sm-10">
+          <!-- line type -->
           <input ng-if="value.type=='line'" type="text" class="form-control" ng-model="kase[key]" ng-disabled="!kase._edit">
           
+          <!-- paragraph type -->
           <textarea ng-if="value.type=='paragraph'" rows="2" class="form-control" ng-model="kase[key]" ng-disabled="!kase._edit"/>
+          
+          <!-- items of array -->
+          <div ng-if="value.type=='array-paragraph'" class="row" ng-repeat="res in kase[key] track by $index">
+            <div class="col-xs-8">
+              <textarea rows="2" class="form-control" ng-model="res" ng-disabled="!kase._edit"/>
+            </div>
+            <div class="col-xs-4" ng-if="kase._edit">
+              <i class="fa fa-trash-o pointer" ng-click="removeFromArray(kase[key], res)" data-toggle="tooltip" title="Remove"></i>
+            </div>
+          </div>
+
+          <!-- add new entry in array -->
+          <div ng-if="value.type=='array-paragraph' && kase._edit" class="row">
+            <div class="col-xs-8">
+              <textarea rows="2" class="form-control" ng-model=
+  "newItem.content"/>
+            </div>
+            <div class="col-xs-4">
+              <button type="button" class="btn btn-info btn-sm" ng-click="pushToArray(kase[key], newItem)">Add</button>
+            </div>
+          </div>
+          
         </div>
+        
       </div>
       <div class="form-group form-group-sm" ng-if="externalLinkKey">
         <div class="col-xs-4"></div>

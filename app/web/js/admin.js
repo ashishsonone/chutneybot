@@ -282,7 +282,8 @@ casesApp.config(function($routeProvider) {
             
             idKey : '_id',
             searchField : 'case',
-            resPath : "/api/obj/responses/?case=" + kaseId,
+            resPath : "/api/obj/responses",
+            resParams : "?case=" + kaseId, //for use in GET all objects
             mapping : {
               case : {
                 type : 'line',
@@ -317,6 +318,7 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
   $scope.mapping = config.mapping;
   
   $scope.RES_URL = $scope.BASE_URL + config.resPath;
+  $scope.RES_PARAMS = config.resParams;
   
   $scope.headerMapping = config.headerMapping;
   $scope.headerObject = null;
@@ -332,8 +334,17 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
   $scope.kases = [];
   $scope.addMode = false;
   
-  $scope.newKase = {};
+  $scope.newKase = {}; //used after calling initNewKase
   $scope.loading = false;
+  
+  $scope.initNewKase = function(){
+    $scope.newKase = {};
+    for(var k in $scope.mapping){
+      if($scope.mapping[k].type == 'array-paragraph'){
+        $scope.newKase[k] = [];
+      }
+    }
+  };
   
   $scope.showToast = function(msg, isError){
     $scope.toastText = msg;
@@ -411,11 +422,11 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
   
   $scope.addNewKase = function(){
     $scope.addMode = true;
-    $scope.newKase = {};
+    $scope.initNewKase();
   };
   
   $scope.cancelNewKase = function(){
-    $scope.newCase = {};
+    $scope.initNewKase();
     $scope.addMode = false;
   };
     
@@ -436,7 +447,7 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
         $scope.showToast("Success saving the new object '" + kase.name + "'" , false);
         $scope.kases.push(data);
         
-        $scope.newKase = {};
+        $scope.initNewKase();
         $scope.addMode = false;
         $scope.$apply();
       },
@@ -446,9 +457,19 @@ casesApp.controller('caseController', ['$scope', '$location', '$window', 'config
       }
     });
   };
+  
+  $scope.pushToArray = function(arr, newItem){
+    arr.push(newItem.content);
+    newItem.content = '';
+  };
+  
+  $scope.removeFromArray = function(arr, item){
+    var index = arr.indexOf(item);
+    arr.splice(index, 1);
+  };
     
   $scope.fetchCases = function(){
-    var url = $scope.RES_URL;
+    var url = $scope.RES_URL + ($scope.RES_PARAMS || '');
     console.log("cases : " + url);
     
     $scope.loading = true;
