@@ -40,6 +40,10 @@
   </div>
 </div>
 
+<div class="row" style="text-align: center;" ng-if="kases.length==0" style="margin : 20px; padding : 10px;">
+  <b style="color:orange">No entries yet. Please create one from above (green + button)</b>
+</div>
+
 <div class="row" style="margin : 20px; padding : 10px; border : 1px solid; border-color: gray; border-radius: 25px;" ng-repeat="kase in kases| filter:search">
   
   <div class="col-xs-10">
