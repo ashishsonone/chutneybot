@@ -30,6 +30,32 @@ var regexUtils = require('../utils/regex');
   - work-all
   - work-all-more
   
+  - who-position-found
+  - who-position-not-found
+  
+  - who-name-found
+  - who-name-not-found
+  
+  - team-intro
+  - team-more
+  
+  - owns
+  - founding-year
+  
+  - clients-given-office
+  - clients-all
+  
+  - awards-given-name-not-won
+  - awards-given-name-won
+  - awards-given-office
+  - awards-given-year-not-won
+  - awards-given-year-won
+  - awards-given-domestic
+  - awards-given-international
+  - awards-all
+  
+  - culture
+  
 */
 
 function getRandomResponse(scenario, dict){

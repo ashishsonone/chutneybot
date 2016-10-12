@@ -15,20 +15,15 @@ var tree = {
     },
     
     reply : function(session){
-      var reply = [
-        {
-          _type : 'text',
-          value : "Hi I am chutney's new chat bot. Call me Sid. Ask me something about WebChutney."
-        },
-        {
-          _type : 'text',
-          value : "To see what kind of questions you can ask look/tap at suggestions shown(in green) just below the input box. Menu items don't work as of now."
+      var promise = responsesDb.getRandomResponse('welcome', {});
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
         }
-      ]
-      return {
-        reply : reply,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      });
+      
+      return promise;
     },
     
     child : null,
@@ -44,37 +39,36 @@ var tree = {
     
     reply : function(session){
       var position = utils.extractFirstEntityValue(session.state.entities, 'position');
-      var content = "So you want to know who our " + position + " is?";
-      var location = utils.extractFirstEntityValue(session.state.entities, 'location');
-      if(location){
-        content = "So you want to know who our " + position + " is at " + location + " location";
-      }
-      var reply = [
-        {
-          _type : 'text',
-          value : content
-        }
-      ];
       
       var promise = peopleDb.getByPositionId(position);
       promise = promise.then(function(person){
         if(!person){
-          var notFound = {
-            _type : 'text',
-            value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
-          }
-          reply.push(notFound);
+          var dict = {
+            position : position
+          };
+          
+          var p = responsesDb.getRandomResponse('who-position-not-found', dict);
+          
+          return p;
         }
         else{
-          reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
-          reply.push({
-            _type : 'cards',
-            value : [person]
+          var dict = {
+            position : person.position,
+            name : person.name
+          };
+          var p = responsesDb.getRandomResponse('who-position-found', dict);
+          
+          p = p.then(function(output){
+            output.push(person);
+            return output;
           });
+          return p;
         }
-
+      });
+      
+      promise = promise.then(function(output){
         return {
-          reply : reply,
+          reply : output,
           suggestions : _.sample(suggestionsDb.suggestions, 4)
         }
       });
@@ -95,31 +89,36 @@ var tree = {
     
     reply : function(session){
       var name = utils.extractFirstEntityValue(session.state.entities, 'person');
-      var content = "So you want to know who " + name + " is ?";
-      
-      var reply = [
-        {
-          _type : 'text',
-          value : content
-        }
-      ];
       
       var promise = peopleDb.getByNameId(name);
       promise = promise.then(function(person){
         if(!person){
-          var notFound = {
-            _type : 'text',
-            value : 'Sorry, I am not fed with this info yet! I am still evolving as we speak'
-          }
-          reply.push(notFound);
+          var dict = {
+            name : name
+          };
+          
+          var p = responsesDb.getRandomResponse('who-name-not-found', dict);
+          
+          return p;
         }
         else{
-          reply[0].value = 'Here is what I know about our ' + person.position + ' ' + person.name;
-          reply.push(person);
+          var dict = {
+            position : person.position,
+            name : person.name
+          };
+          var p = responsesDb.getRandomResponse('who-name-found', dict);
+          
+          p = p.then(function(output){
+            output.push(person);
+            return output;
+          });
+          return p;
         }
-
+      });
+      
+      promise = promise.then(function(output){
         return {
-          reply : reply,
+          reply : output,
           suggestions : _.sample(suggestionsDb.suggestions, 4)
         }
       });
@@ -154,10 +153,15 @@ var tree = {
     },
     
     reply : function(session){
-      return {
-        reply : "Dentsu Inc",
-        suggestions : ["what is dentsu", "what does webchutney do"]
-      }
+      var promise = responsesDb.getRandomResponse('owns', {});
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : ["what is dentsu", "what does webchutney do"]
+        }
+      });
+      
+      return promise;
     },
     
     child : null,
@@ -172,10 +176,15 @@ var tree = {
     },
     
     reply : function(session){
-      return {
-        reply : "WebChutney was founded in 1999. We’re millennials too",
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      var promise = responsesDb.getRandomResponse('founding-year', {});
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        }
+      });
+      
+      return promise;
     },
     
     child : null,

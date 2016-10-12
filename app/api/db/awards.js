@@ -32,7 +32,7 @@ function getAwardsForYear(year){
     _id : false,
     __v : false,
     nameId : false
-  }).limit(5).exec();
+  }).limit(10).exec();
   
   return promise;
 }
@@ -61,9 +61,23 @@ function getAwardsByName(name){
   return promise;
 }
 
+
+function getAwardsByOffice(office){
+  var promise = AwardModel.find({
+    office : office
+  }, {
+    _id : false,
+    __v : false,
+    nameId : false
+  }).limit(5).exec();
+  
+  return promise;
+}
+
 module.exports = {
   getAwards : getAwards,
   getAwardsForYear : getAwardsForYear,
   getAwardsDomInt : getAwardsDomInt,
-  getAwardsByName : getAwardsByName
+  getAwardsByName : getAwardsByName,
+  getAwardsByOffice : getAwardsByOffice
 };

@@ -1,5 +1,6 @@
 var suggestionsDb = require('../db/suggestions');
 var awardsDb = require('../db/awards');
+var responsesDb = require('../db/responses');
 
 var _ = require('underscore');
 var utils = require('../utils/utils');
@@ -20,29 +21,44 @@ var tree = {
       
       promise = promise.then(function(awardsList){
         if(awardsList.length == 0){
-          var reply = "It seems we haven't yet won " + awardName + " award. But its never too late";
-          return {
-            reply : reply,
-            suggestions : _.sample(suggestionsDb.suggestions, 4)
-          }
+          var dict = {
+            award : awardName
+          };
+          
+          var p = responsesDb.getRandomResponse('awards-given-name-not-won', dict);
+          p = p.then(function(output){
+            return {
+              reply : output,
+              suggestions : _.sample(suggestionsDb.suggestions, 4)
+            }
+          });
+          return p;
         }
         else{
           var name = awardsList[0].name;
-          var reply = [
-            {
-              _type : 'text',
-              value : 'We won ' + countingUtils.getNumberInWords(awardsList.length) + ' ' + name + ' recently'
-            },
-            {
-              _type : 'cards',
-              value : awardsList
-            }
-          ];
+          var count = countingUtils.getNumberInWords(awardsList.length);
           
-          return {
-            reply : reply,
-            suggestions : _.sample(suggestionsDb.suggestions, 4)
-          }
+          var dict = {
+            count : count,
+            award : name
+          };
+          
+          var awardsReply = {
+            _type : 'cards',
+            value : awardsList
+          };
+          
+          var p = responsesDb.getRandomResponse('awards-given-name-won', dict);
+          
+          p = p.then(function(output){
+            output.push(awardsReply);
+            return {
+              reply : output,
+              suggestions : _.sample(suggestionsDb.suggestions, 4)
+            }
+          });
+          
+          return p;        
         }
       });
       
@@ -57,7 +73,8 @@ var tree = {
   "awards.count" : {
     id : "awards.count",
     condition : function(session){
-      return session.state.intent.map["award_count"]
+      return false;
+      return session.state.intent.map["award_count"];
     },
     
     reply : function(session){
@@ -69,7 +86,50 @@ var tree = {
     
     child : null,
     stop : true,
-    sibling : "awards.list"
+    sibling : "awards.office"
+  },
+  
+  "awards.office" : {
+    id : "awards.office",
+    condition : function(session){
+      var place = utils.extractFirstEntityValue(session.state.entities, 'place', []);
+      return place;
+    },
+    
+    reply : function(session){
+      var place = utils.extractFirstEntityValue(session.state.entities, 'place', []);
+      
+      var promise = awardsDb.getAwardsByOffice(place);
+      
+      promise = promise.then(function(awardsList){
+        //workList = workDb.present(workList);
+        var awardsReply = {
+          _type : 'cards',
+          value : awardsList
+        };
+        
+        var dict = {
+          office : place
+        };
+        
+        var p = responsesDb.getRandomResponse('awards-given-office', dict);
+        p = p.then(function(output){
+          output.push(awardsReply);
+          return {
+            reply : output,
+            suggestions : _.sample(suggestionsDb.suggestions, 4)
+          }
+        });
+        
+        return p;  
+      });
+      
+      return promise;
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "awards.list",
   },
   
   "awards.list" : {
@@ -79,67 +139,91 @@ var tree = {
     },
     
     reply : function(session){
-      var reply = [
-        {
-          _type : 'text',
-          value : "We have so many awards in our bucket - you'll be surprised !"
-        }
-      ];
-      
       var year = utils.extractFirstEntityValue(session.state.entities, 'year', []);
       
       var dom_int = utils.extractFirstEntityValue(session.state.entities, 'dom_int', []);
       
       var promise;
       if(year){
-        reply[0].value = "Here are awards we've won in the year " + year;
-        
         promise = awardsDb.getAwardsForYear(year);
         promise = promise.then(function(awardsList){
           if(awardsList.length == 0){
-            reply[0].value = "But oops, it seems we didn't win any in the year " + year;
+            var dict = {
+              year : year
+            };
+            var p = responsesDb.getRandomResponse('awards-given-year-not-won', dict);
+            
+            return p;
           }
           else{
             var awardsReply = {
               _type : 'cards',
               value : awardsList
             }
-            reply.push(awardsReply);
+            
+            var dict = {
+              year : year,
+              count : countingUtils.getNumberInWords(awardsList.length)
+            };
+            
+            var p = responsesDb.getRandomResponse('awards-given-year-won', dict);
+            
+            p = p.then(function(output){
+              output.push(awardsReply);
+              return output;
+            });
+            
+            return p;
           }
         });
       }
       else if(dom_int){
-        reply[0].value = "Here are the notable " + dom_int + " awards we've won";
-        
         promise = awardsDb.getAwardsDomInt(dom_int);
         promise = promise.then(function(awardsList){
-          if(awardsList.length == 0){
-            reply[0].value = "But oops, it seems we didn't win any " + dom_int + " awards";
+          var awardsReply = {
+            _type : 'cards',
+            value : awardsList
+          };
+          
+          var p;
+          if(dom_int=='domestic'){
+            p = responsesDb.getRandomResponse('awards-given-domestic', {});
           }
           else{
-            var awardsReply = {
-              _type : 'cards',
-              value : awardsList
-            }
-            reply.push(awardsReply);
+            p = responsesDb.getRandomResponse('awards-given-international', {});
           }
+          
+          p = p.then(function(output){
+            output.push(awardsReply);
+            return output;
+          });
+          
+          return p;
         });
       }
       else{
+        //general awards show
         promise = awardsDb.getAwards(5);
         promise = promise.then(function(awardsList){
           var awardsReply = {
             _type : 'cards',
             value : awardsList
           }
-          reply.push(awardsReply);
+          
+          var p = responsesDb.getRandomResponse('awards-all', {});
+          p = p.then(function(output){
+            output.push(awardsReply);
+            return output;
+          });
+          
+          return p;
         });
       }
       
-      promise = promise.then(function(){
+      promise = promise.then(function(output){
         //reply has been filled
         return {
-          reply : reply,
+          reply : output,
           suggestions : _.sample(suggestionsDb.suggestions, 4)
         }
       });

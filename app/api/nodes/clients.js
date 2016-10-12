@@ -2,6 +2,7 @@
 
 var clientsDb = require('../db/clients');
 var suggestionsDb = require('../db/suggestions');
+var responsesDb = require('../db/responses');
 
 var utils = require('../utils/utils');
 var _ = require('underscore');
@@ -20,21 +21,27 @@ var tree = {
       
       var promise = clientsDb.getClientsByOffice(location);
       promise = promise.then(function(list){
-        var reply = [{
-          _type : 'text',
-          value : 'Clients for which our ' + location + ' office has worked for :',
-        }];
-
         var workReply = {
           _type : 'cards',
           value : list
         };
-        reply.push(workReply);
-
-        return {
-          reply : reply,
-          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        
+        var dict = {
+          office : location
         };
+        
+        var p = responsesDb.getRandomResponse('clients-given-office', dict);
+        
+        p = p.then(function(output){
+          output.push(workReply);
+          
+          return {
+            reply : output,
+            suggestions : _.sample(suggestionsDb.suggestions, 4)
+          }
+        });
+        
+        return p;
       });
        
       return promise;
@@ -54,21 +61,23 @@ var tree = {
     reply : function (session) {
       var promise = clientsDb.getClients();
       promise = promise.then(function(list){
-        var reply = [{
-          _type : 'text',
-          value : 'Just look at our ever growing list of clients ;)',
-        }];
-
         var workReply = {
           _type : 'cards',
           value : list
         };
-        reply.push(workReply);
-
-        return {
-          reply : reply,
-          suggestions : _.sample(suggestionsDb.suggestions, 4)
-        };
+        
+        var p = responsesDb.getRandomResponse('clients-all', {});
+        
+        p = p.then(function(output){
+          output.push(workReply);
+          
+          return {
+            reply : output,
+            suggestions : _.sample(suggestionsDb.suggestions, 4)
+          }
+        });
+        
+        return p;
       });
        
       return promise;
