@@ -422,10 +422,7 @@ var tree = {
       
       var promise = responsesDb.getRandomResponse('gibberish', dict);
       
-      promise = promise.then(function(newOutput){
-        if(newOutput){
-          output = newOutput;
-        }
+      promise = promise.then(function(output){
         return {
           reply : output,
           suggestions : suggestions
