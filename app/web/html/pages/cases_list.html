@@ -39,10 +39,11 @@
           <!-- paragraph type -->
           <textarea ng-if="value.type=='paragraph'" rows="2" class="form-control" ng-model="newKase[key]"/>
           
-          <!-- items of array -->
-          <div ng-if="value.type=='array-paragraph'" class="row" ng-repeat="res in newKase[key] track by $index">
+          <!-- items of array (line or paragraph)-->
+          <div ng-if="value.type=='array-paragraph' || value.type=='array-line'" class="row" ng-repeat="res in newKase[key] track by $index">
             <div class="col-xs-8">
-              <textarea rows="2" class="form-control" ng-model="newKase[key][$index]"/>
+              <textarea ng-if="value.type=='array-paragraph'" rows="2" class="form-control" ng-model="$parent.newKase[key][$index]"/>
+              <input ng-if="value.type=='array-line'" type="text" class="form-control" ng-model="$parent.newKase[key][$index]">
             </div>
             <div class="col-xs-4">
               <i class="fa fa-trash-o pointer" ng-click="removeFromArray(newKase[key], $index)" data-toggle="tooltip" title="Remove"></i>
@@ -50,10 +51,11 @@
           </div>
           
           <!-- add new entry in array -->
-          <div ng-if="value.type=='array-paragraph'" class="row">
+          <div ng-if="value.type=='array-paragraph' || value.type=='array-line'" class="row">
             <div class="col-xs-8">
-              <textarea rows="2" class="form-control" ng-model=
-"newItem.content"/>
+              <textarea rows="2" ng-if="value.type=='array-paragraph'" class="form-control" ng-model=
+"$parent.newItem.content"/>
+              <input ng-if="value.type=='array-line'" type="text" class="form-control" ng-model="$parent.newItem.content">
             </div>
             <div class="col-xs-4">
               <button type="button" class="btn btn-info btn-sm" ng-click="pushToArray(newKase[key], newItem)">Add</button>
@@ -91,7 +93,7 @@
 
 <div class="row" style="margin : 20px; padding : 10px; border : 1px solid; border-color: gray; border-radius: 25px;" ng-repeat="kase in kases| filter:search">
   <div class="col-xs-1">
-    <span>{{$index}}</span>  
+    <span>{{$index+1}}</span>  
   </div>
   <div class="col-xs-9">
     <form class="form-horizontal">
@@ -105,9 +107,11 @@
           <textarea ng-if="value.type=='paragraph'" rows="2" class="form-control" ng-model="kase[key]" ng-disabled="!kase._edit"/>
           
           <!-- items of array -->
-          <div ng-if="value.type=='array-paragraph'" class="row" ng-repeat="res in kase[key] track by $index">
+          <div ng-if="value.type=='array-paragraph' || value.type=='array-line'" class="row" ng-repeat="res in kase[key] track by $index">
             <div class="col-xs-8">
-              <textarea rows="2" class="form-control" ng-model="kase[key][$index]" ng-disabled="!kase._edit"/>
+              <textarea ng-if="value.type=='array-paragraph'" rows="2" class="form-control" ng-model="$parent.kase[key][$index]" ng-disabled="!kase._edit"/>
+              <input ng-if="value.type=='array-line'" type="text" class="form-control" ng-model="$parent.kase[key][$index]" ng-disabled="!kase._edit">
+              
             </div>
             <div class="col-xs-4" ng-if="kase._edit">
               <i class="fa fa-trash-o pointer" ng-click="removeFromArray(kase[key], $index)" data-toggle="tooltip" title="Remove"></i>
@@ -115,10 +119,11 @@
           </div>
 
           <!-- add new entry in array -->
-          <div ng-if="value.type=='array-paragraph' && kase._edit" class="row">
+          <div ng-if="(value.type=='array-paragraph'  || value.type=='array-line') && kase._edit" class="row">
             <div class="col-xs-8">
-              <textarea rows="2" class="form-control" ng-model=
-  "newItem.content"/>
+              <textarea ng-if="value.type=='array-paragraph'" rows="2" class="form-control" ng-model="$parent.newItem.content"/>
+              <input ng-if="value.type=='array-line'" type="text" class="form-control" ng-model="$parent.newItem.content">
+              
             </div>
             <div class="col-xs-4">
               <button type="button" class="btn btn-info btn-sm" ng-click="pushToArray(kase[key], newItem)">Add</button>

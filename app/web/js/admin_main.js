@@ -33,7 +33,7 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
   $scope.initNewKase = function(){
     $scope.newKase = {};
     for(var k in $scope.mapping){
-      if($scope.mapping[k].type == 'array-paragraph'){
+      if($scope.mapping[k].type == 'array-paragraph' || $scope.mapping[k].type == 'array-line'){
         $scope.newKase[k] = [];
       }
     }
@@ -167,6 +167,7 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
   };
   
   $scope.pushToArray = function(arr, newItem){
+    console.log('pushToArray ' + newItem);
     if(!newItem){
       return;
     }

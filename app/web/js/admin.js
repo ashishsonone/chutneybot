@@ -144,7 +144,7 @@ casesApp.config(function($routeProvider) {
                 hide : true
               },
               type : {
-                type : 'line',
+                type : 'array-line',
                 label : 'Type',
                 hide : true
               },
@@ -205,7 +205,7 @@ casesApp.config(function($routeProvider) {
                 hide : true
               },
               type : {
-                type : 'line',
+                type : 'array-line',
                 label : 'Type',
                 hide : true
               },
