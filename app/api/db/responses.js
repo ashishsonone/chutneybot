@@ -9,6 +9,18 @@ var regexUtils = require('../utils/regex');
   - intro-chutney
   - intro-dentsu
   - intro-other-company
+  - services
+  
+  - join-intro-ask-yes-no
+  - join-replied-no
+  - join-replied-invalid
+  - join-ask-name
+  - join-ask-position
+  - join-ask-location
+  - join-ask-email
+  - join-ask-phone
+  - join-done
+  
 */
 
 function getRandomResponse(scenario, dict){

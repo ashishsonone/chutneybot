@@ -2,6 +2,7 @@
 
 var suggestionsDb = require('../db/suggestions');
 var applicationsDb = require('../db/applications');
+var responsesDb = require('../db/responses');
 
 var utils = require('../utils/utils');
 var _ = require('underscore');
@@ -16,33 +17,15 @@ var tree = {
     },
     
     reply : function (session) {
-      var reply = [
-        {
-          _type : 'text',
-          value : 'Why join us? Three reasons that I can think of right now.'
-        },
-        {
-          _type : 'text',
-          value : '#1 You don’t choose between making a trash-talking dustbin or an emo film about coping with memory loss. You just do both at Dentsu-Webchutney'
-        },
-        {
-          _type : 'text',
-          value : "#2. We have problems too. Like not having enough 'senior' citizens on the team. Be young, loud & proud at Dentsu-Webchutney."
-        },
-        {
-          _type : 'text',
-          value : '#3. You can check out anytime you like, but you wont ever leave. Get addicted to werk at Dentsu-Webchutney'
-        },
-        {
-          _type : 'text',
-          value : 'Ready to join? Just give a nod - yes or no'
-        }
-      ];
+      var promise = responsesDb.getRandomResponse('join-intro-ask-yes-no', {});
       
-      return {
-        reply : reply,
-        suggestions : ["Yes", "No"]
-      };
+      promise = promise.then(function(output){
+         return {
+          reply : output,
+          suggestions : ["Yes", "No"]
+        };
+      });
+      return promise;
     },
     
     child : "join.yes_no",
@@ -61,18 +44,26 @@ var tree = {
       if(yesNo == 'yes'){
         session.pauseWit = true; //one time flag to pause running wit analyze. An optimization while taking raw input like name, phone, email
 
-        return {
-          reply : "Good ! May I know your name please ?",
-          suggestions : ["Rakesh Gupta", "Shaina Mehra"],
-          child : "join.name" //as will reply with name next
-        }
+        var promise = responsesDb.getRandomResponse('join-ask-name', {});
+        promise = promise.then(function(output){
+          return {
+            reply : output,
+            suggestions : ["Rakesh Gupta", "Shaina Mehra"],
+            child : "join.name" //as will reply with name next
+          }
+        });
+        return promise;
       }
       else{
-        return {
-          reply : "No problem ! What else do you want to know about chutney?",
-          suggestions : ["awards won", "portfolio", "contact details"],
-          child : null //we're done with this branch of conversation
-        };
+        var promise = responsesDb.getRandomResponse('join-replied-no', {});
+        promise = promise.then(function(output){
+          return {
+            reply : output,
+            suggestions : ["awards won", "portfolio", "contact details"],
+            child : null //we're done with this branch of conversation
+          };
+        });
+        return promise;
       }
     },
     
@@ -88,10 +79,14 @@ var tree = {
     },
     
     reply : function (session) {
-      return {
-        reply : "I didn't get - please reply with yes or no",
-        suggestions : ["Yeah", "Nope"]
-      };
+      var promise = responsesDb.getRandomResponse('join-replied-invalid');
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : ["Yeah", "Nope"]
+        };
+      });
+      return promise;
     },
     
     child : "join.yes_no",
@@ -107,12 +102,19 @@ var tree = {
     
     reply : function (session) {
       session.context['name'] = session.state.input;
-      var text = "Great " + session.context.name + "! Which position are you looking for?";
-      session.pauseWit = true;
-      return {
-        reply : text,
-        suggestions : ["designer", "web developer"]
+      var dict = {
+        name : session.context['name']
       };
+      var promise = responsesDb.getRandomResponse('join-ask-position', dict);
+      
+      session.pauseWit = true;
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : ["designer", "web developer"]
+        };
+      });
+      return promise;
     },
     
     child : "join.position",
@@ -128,12 +130,23 @@ var tree = {
     
     reply : function (session) {
       session.context['position'] = session.state.input;
-      var text = "you branch preference ? - select from the 3 suggestions shown below";
-      session.pauseWit = true;
-      return {
-        reply : text,
-        suggestions : ["Mumbai", "Gurgaon", "Bengaluru"]
+      
+      var dict = {
+        name : session.context['name'],
+        position : session.context['position']
       };
+      var promise = responsesDb.getRandomResponse('join-ask-location', dict);
+      
+      session.pauseWit = true;
+
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : ["Mumbai", "Gurgaon", "Bengaluru"]
+        };
+      });
+      
+      return promise;
     },
     
     child : "join.branch",
@@ -149,12 +162,22 @@ var tree = {
     
     reply : function (session) {
       session.context['branch'] = session.state.input;
-      var text = "You email address";
-      session.pauseWit = true;
-      return {
-        reply : text,
-        suggestions : ["rakesh@gmail.com"]
+      
+      var dict = {
+        name : session.context['name'],
+        position : session.context['position'],
+        branch : session.context['branch']
       };
+      var promise = responsesDb.getRandomResponse('join-ask-email', dict);
+      
+      session.pauseWit = true;
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : ["rakesh@gmail.com"]
+        };
+      });
+      return promise;
     },
     
     child : "join.email",
@@ -170,12 +193,22 @@ var tree = {
     
     reply : function (session) {
       session.context['email'] = session.state.input;
-      var text = "Just one last detail, your phone number";
-      session.pauseWit = true;
-      return {
-        reply : text,
-        suggestions : ["8976208510"]
+      
+      var dict = {
+        name : session.context['name'],
+        position : session.context['position'],
+        branch : session.context['branch']
       };
+      var promise = responsesDb.getRandomResponse('join-ask-phone', dict);
+      
+      session.pauseWit = true;
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : ["8976208510"]
+        };
+      });
+      return promise;
     },
     
     child : "join.phone",
@@ -191,25 +224,30 @@ var tree = {
     
     reply : function (session) {
       session.context['phone'] = session.state.input;
-      var reply = [
-        {
-          _type : 'text',
-          value : "Thanks " + session.context['name'] + ". One of us will reach out to you soon. In the mean time look at our culture video to get a glipse of how cool we are !! And this is just the tip of an iceberg ;)"
-        },
-        {
-          _type : 'video-card',
-          url : 'https://www.youtube.com/watch?v=I_-6YxaDiTk',
-          title : 'the swag - dentsu webchutney'
-        }
-      ];
       
+      var dict = {
+        name : session.context['name'],
+        position : session.context['position'],
+        branch : session.context['branch']
+      };
+      var promise = responsesDb.getRandomResponse('join-done', dict);
+      
+      session.pauseWit = true;
       mailer.sendCandidateApplicationMail(session.context);
       applicationsDb.saveApplication(session.context);
       
-      return {
-        reply : reply,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      promise = promise.then(function(output){
+        output.push({
+          _type : 'video-card',
+          url : 'https://www.youtube.com/watch?v=I_-6YxaDiTk',
+          title : 'the swag - dentsu webchutney'
+        });
+        return {
+          reply : output,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        };
+      });
+      return promise;
     },
     
     child : null,

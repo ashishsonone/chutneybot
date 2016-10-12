@@ -318,19 +318,14 @@ var tree = {
     },
     
     reply : function(session){
-      return {
-        reply : [
-          {
-            _type : 'text',
-            value : "We’re a digitally driven communication agency. How people behave in a digital world is at the heart of our thinking. What we deliver are tech-enabled solutions across strategy, content and experiences. NOT onion rawa dosa or tundey kabab."
-          },
-          {
-            _type : 'text',
-            value : "Ok? Ok."
-          }
-        ],
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      var promise = responsesDb.getRandomResponse('services', {});
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        }
+      });
+      return promise;
     },
     
     child : null,
