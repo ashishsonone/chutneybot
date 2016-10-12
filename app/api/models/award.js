@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AwardSchema = Schema({
-  _type : String,
-  
   name : String,
   nameId : String, //id required (query by award name)
   

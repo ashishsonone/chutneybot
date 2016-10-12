@@ -90,8 +90,10 @@
 </div>
 
 <div class="row" style="margin : 20px; padding : 10px; border : 1px solid; border-color: gray; border-radius: 25px;" ng-repeat="kase in kases| filter:search">
-  
-  <div class="col-xs-10">
+  <div class="col-xs-1">
+    <span>{{$index}}</span>  
+  </div>
+  <div class="col-xs-9">
     <form class="form-horizontal">
       <div class="form-group form-group-sm" ng-repeat="(key, value) in mapping" ng-if="(kase._edit || !value.hide)">
         <label class="col-sm-2 control-label">{{value.label}}</label>

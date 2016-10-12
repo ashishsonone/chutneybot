@@ -1,8 +1,9 @@
 "use strict"
 var suggestionsDb = require('../db/suggestions');
-var aboutusDb = require('../db/aboutus');
 var peopleDb = require('../db/people');
 var responsesDb = require('../db/responses');
+var newsDb = require('../db/news');
+
 var utils = require('../utils/utils');
 
 var _ = require('underscore');
@@ -234,21 +235,22 @@ var tree = {
     },
     
     reply : function(session){
-      var reply = [
-        {
-          _type : 'text',
-          value : "So here is our culture video. See for yourself. I'm sure you'll like it."
-        },
-        {
-          _type : 'video-card',
-          url : 'https://www.youtube.com/watch?v=I_-6YxaDiTk',
-          title : 'the swag - dentsu webchutney'
-        }
-      ];
-      return {
-        reply : reply,
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      var videoCard = {
+        _type : 'video-card',
+        url : 'https://www.youtube.com/watch?v=I_-6YxaDiTk',
+        title : 'the swag - dentsu webchutney'
+      };
+      
+      var p = responsesDb.getRandomResponse('culture', {});
+      p = p.then(function(output){
+        output.push(videoCard);
+        return {
+          reply : output,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        };
+      });
+      
+      return p;
     },
     
     child : null,
@@ -264,10 +266,24 @@ var tree = {
     },
     
     reply : function(session){
-      return {
-        reply : "Look at the headlines we make every now and then. <to do : show headlines>",
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
-      }
+      var promise = newsDb.getNews();
+      promise = promise.then(function(newsList){
+        var newsReply = {
+          _type : 'cards',
+          value : newsList
+        };
+        var p = responsesDb.getRandomResponse('news', {});
+        p = p.then(function(output){
+          output.push(newsReply);
+          return {
+            reply : output,
+            suggestions : _.sample(suggestionsDb.suggestions, 4)
+          };
+        });
+        return p;
+      });
+      
+      return promise;
     },
     
     child : null,
@@ -328,6 +344,28 @@ var tree = {
     
     reply : function(session){
       var promise = responsesDb.getRandomResponse('services', {});
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : _.sample(suggestionsDb.suggestions, 4)
+        }
+      });
+      return promise;
+    },
+    
+    child : null,
+    stop : true,
+    sibling : "greeting"
+  },
+  
+  "greeting" : {
+    id : "greeting",
+    condition : function(session){
+      return session.state.intent.map["greeting"];
+    },
+    
+    reply : function(session){
+      var promise = responsesDb.getRandomResponse('greeting', {});
       promise = promise.then(function(output){
         return {
           reply : output,
@@ -402,11 +440,25 @@ var tree = {
     reply : function(session){
       var company = utils.extractFirstEntityValue(session.state.entities, 'company', ['general']);
 
-      //company will either be 'dentsu' or 'chutney'
-      return {
-        reply : aboutusDb.intro[company],
-        suggestions : _.sample(suggestionsDb.suggestions, 4)
+      var promise;
+      var suggestions = _.sample(suggestionsDb.suggestions, 4);
+      
+      if(company == 'chutney'){
+        promise = responsesDb.getRandomResponse('intro-chutney', {});
+        suggestions = ["ok! but what is DAN"];
       }
+      else{
+        promise = responsesDb.getRandomResponse('intro-dentsu', {});
+      }
+      
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : suggestions
+        }
+      });
+      
+      return promise;
     },
     
     child : null,

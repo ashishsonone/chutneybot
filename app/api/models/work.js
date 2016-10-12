@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var WorkSchema = Schema({
-  _type : String,
-  
   nick : String, //id required to refer by award
   
   title : String,

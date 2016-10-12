@@ -256,6 +256,78 @@ casesApp.config(function($routeProvider) {
       }
     })
   
+    .when('/news', {
+      templateUrl : 'pages/cases_list.html',
+      controller  : 'caseController',
+      resolve : {
+        config : function(){
+          var c = {
+            title : "Manage News",
+            idKey : '_id',
+            searchField : 'headline',
+            resPath : "/api/obj/news",
+            mapping : {
+              headline : {
+                type : 'line',
+                label : 'Headline'
+              },
+              source : {
+                type : 'line',
+                label : 'Source',
+              },
+              date : {
+                type : 'line',
+                label : 'Date',
+              },
+              link : {
+                type : 'line',
+                label : 'Link',
+              }
+            }
+          }
+          return c;
+        }
+      }
+    })
+  
+    .when('/contacts', {
+      templateUrl : 'pages/cases_list.html',
+      controller  : 'caseController',
+      resolve : {
+        config : function(){
+          var c = {
+            title : "Manage Office Contacts",
+            idKey : '_id',
+            searchField : 'office',
+            resPath : "/api/obj/contacts",
+            mapping : {
+              office : {
+                type : 'line',
+                label : 'Office'
+              },
+              address : {
+                type : 'line',
+                label : 'Address',
+              },
+              map : {
+                type : 'line',
+                label : 'Map Location',
+              },
+              phone : {
+                type : 'line',
+                label : 'Phone',
+              },
+              email : {
+                type : 'line',
+                label : 'Email',
+              }
+            }
+          };
+          return c;
+        }
+      }
+    })
+  
     .when('/cases/:case', {
       templateUrl : 'pages/cases_list.html',
       controller  : 'caseController',
@@ -300,9 +372,8 @@ casesApp.config(function($routeProvider) {
     })
 
     // route for the about page
-    .when('/:other', {
-      templateUrl : 'pages/reponses_list.html',
-      controller  : 'responseController'
+    .when('/', {
+      templateUrl : 'pages/admin_landing.html',
     })
 });
 

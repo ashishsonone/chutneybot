@@ -5,12 +5,17 @@ var regexUtils = require('../utils/regex');
 
 /*
   cases/scenarios :
+  
+  (7)
+  - greeting
+  - welcome
   - gibberish
   - intro-chutney
   - intro-dentsu
   - intro-other-company
   - services
   
+  (9)
   - join-intro-ask-yes-no
   - join-replied-no
   - join-replied-invalid
@@ -21,30 +26,36 @@ var regexUtils = require('../utils/regex');
   - join-ask-phone
   - join-done
   
+  (2)
   - contact-ask-location
   - contact-done
   
+  (5)
   - work-given-company-worked
   - work-given-company-not-worked
   - work-given-office
   - work-all
   - work-all-more
   
+  (4)
   - who-position-found
   - who-position-not-found
-  
   - who-name-found
   - who-name-not-found
   
+  (2)
   - team-intro
   - team-more
   
+  (2)
   - owns
   - founding-year
   
+  (2)
   - clients-given-office
   - clients-all
   
+  (8)
   - awards-given-name-not-won
   - awards-given-name-won
   - awards-given-office
@@ -54,8 +65,9 @@ var regexUtils = require('../utils/regex');
   - awards-given-international
   - awards-all
   
+  (0)
   - culture
-  
+  - news
 */
 
 function getRandomResponse(scenario, dict){

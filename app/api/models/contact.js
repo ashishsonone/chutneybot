@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ContactSchema = Schema({
-  _type : String,
-  
   office : String,
   
   address : String,

@@ -3,6 +3,8 @@ var suggestions = [
   "awards won",
   "CEO of webchutney",
   "your CCO",
+  "chutney news",
+  "webchutney updates",
   "culture at webchutney",
   "clientele",
   "mumbai office clients",

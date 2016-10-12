@@ -4,22 +4,29 @@ var PersonModel = require('../models/person').model;
 var AwardModel = require('../models/award').model;
 var WorkModel = require('../models/work').model;
 var ClientModel = require('../models/client').model;
+var NewsModel = require('../models/news').model;
+var ContactModel = require('../models/contact').model;
 
 var router = require('express').Router();
 
+//model : no default
 var MODEL_MAP = {
   'case' : CaseModel,
   'response' : ResponseModel,
   'person' : PersonModel,
   'award' : AwardModel,
   'work' : WorkModel,
-  'client' : ClientModel
+  'client' : ClientModel,
+  'news' : NewsModel,
+  'contact' : ContactModel
 };
 
+//id key : default _id
 var ID_MAP = {
   'case' : 'name',
 };
 
+//sort key : no default
 var SORT_MAP = {
   'case' : 'name',
   'response' : null,
@@ -27,6 +34,18 @@ var SORT_MAP = {
   'award' : 'name',
   'work' : 'nick',
   'client' : 'name',
+  'news' : 'date',
+  'contact' : 'office'
+};
+
+//sort order : default 1
+var SORT_ORDER = {
+  'news' : -1
+};
+
+//get all limit : default 50
+var LIMIT = {
+  'news' : 10
 };
 
 function post(type, req, res){
@@ -73,7 +92,7 @@ function put(type, req, res){
 function get(type, req, res){
   var model = MODEL_MAP[type];
   
-  var limit = 50;
+  var limit = LIMIT[type] || 50;
   if(req.query.limit){
     limit = req.query.limit;
   }
@@ -88,7 +107,7 @@ function get(type, req, res){
   }
   
   var sort = {};
-  sort[SORT_MAP[type]] = 1;
+  sort[SORT_MAP[type]] = SORT_ORDER[type] || 1;
   var promise = model
     .find(findQuery)
     .limit(limit)
@@ -174,6 +193,8 @@ genRoutes('/people', 'person', router);
 genRoutes('/awards', 'award', router);
 genRoutes('/work', 'work', router);
 genRoutes('/clients', 'client', router);
+genRoutes('/news', 'news', router);
+genRoutes('/contacts', 'contact', router);
 
 module.exports = {
   router : router
