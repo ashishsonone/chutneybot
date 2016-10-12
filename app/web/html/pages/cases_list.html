@@ -42,10 +42,10 @@
           <!-- items of array -->
           <div ng-if="value.type=='array-paragraph'" class="row" ng-repeat="res in newKase[key] track by $index">
             <div class="col-xs-8">
-              <textarea rows="2" class="form-control" ng-model="res"/>
+              <textarea rows="2" class="form-control" ng-model="newKase[key][$index]"/>
             </div>
             <div class="col-xs-4">
-              <i class="fa fa-trash-o pointer" ng-click="removeFromArray(newKase[key], res)" data-toggle="tooltip" title="Remove"></i>
+              <i class="fa fa-trash-o pointer" ng-click="removeFromArray(newKase[key], $index)" data-toggle="tooltip" title="Remove"></i>
             </div>
           </div>
           
@@ -105,10 +105,10 @@
           <!-- items of array -->
           <div ng-if="value.type=='array-paragraph'" class="row" ng-repeat="res in kase[key] track by $index">
             <div class="col-xs-8">
-              <textarea rows="2" class="form-control" ng-model="res" ng-disabled="!kase._edit"/>
+              <textarea rows="2" class="form-control" ng-model="kase[key][$index]" ng-disabled="!kase._edit"/>
             </div>
             <div class="col-xs-4" ng-if="kase._edit">
-              <i class="fa fa-trash-o pointer" ng-click="removeFromArray(kase[key], res)" data-toggle="tooltip" title="Remove"></i>
+              <i class="fa fa-trash-o pointer" ng-click="removeFromArray(kase[key], $index)" data-toggle="tooltip" title="Remove"></i>
             </div>
           </div>
 

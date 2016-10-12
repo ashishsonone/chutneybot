@@ -3,7 +3,6 @@ var suggestionsDb = require('../db/suggestions');
 var aboutusDb = require('../db/aboutus');
 var peopleDb = require('../db/people');
 var responsesDb = require('../db/responses');
-
 var utils = require('../utils/utils');
 
 var _ = require('underscore');
@@ -348,24 +347,28 @@ var tree = {
     reply : function(session){
       var company = utils.extractFirstEntityValue(session.state.entities, 'company', []);
 
-      var reply;
+      var promise;
       var suggestions = _.sample(suggestionsDb.suggestions, 4);
       
       if(company == 'chutney'){
-        reply = aboutusDb.getChunteyIntro();
-        suggestions = ["ok! but what is DAN", "whats new ?"];
+        promise = responsesDb.getRandomResponse('intro-chutney', {});
+        suggestions = ["ok! but what is DAN"];
       }
       else if(company == 'dentsu'){
-        reply = aboutusDb.intro['dentsu']; //text
+        promise = responsesDb.getRandomResponse('intro-dentsu', {});
       }
       else if(company){
-        reply = "I know nothing about " + company + ". Please ask something else";
+        promise = responsesDb.getRandomResponse('intro-other-company', {company : company});;
       }
       
-      return {
-        reply : reply,
-        suggestions : suggestions
-      }
+      promise = promise.then(function(output){
+        return {
+          reply : output,
+          suggestions : suggestions
+        }
+      });
+      
+      return promise;
     },
     
     child : null,
@@ -414,51 +417,6 @@ var tree = {
     },
     
     reply : function(session){
-      var output = [
-        {
-          _type : "text",
-          value : "Uhm, you see, there might be 50 shades of grey, but the shades of my grey matter are fairly limited. Now that was a smart one for a growing bot, wasn’t it?"
-        },
-        {
-          _type : 'text',
-          value : "Anyway, why don’t you hit the 'contact details' option? That should be a quick-fix!",
-        },
-        {
-          _type : 'text',
-          value : 'Meanwhile have a look at these fun pics'
-        },
-        {
-          _type : "cards",
-          value :[
-            {
-              _type : "image",
-              url : "https://pbs.twimg.com/profile_images/604644048/sign051.gif",
-              "caption" : "Go"
-            },
-            {
-              _type : "image",
-              url : "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSTD2CSNAfy2CSEXfvRPIUptJD6tf8S8-fhXbSsl1UF8qH7fxdv9g",
-              "caption" : "Dog"
-            },
-            {
-              _type : "image",
-              url : "http://www.vetmed.ucdavis.edu/vmth/local_resources/images/featured_images/small_animal.jpg",
-              "caption" : "Cat"
-            },
-            {
-              _type : "image",
-              url : "http://cdn.bleedingcool.net/wp-content/uploads/2011/11/Toy-Story-gang-reunites-for-Small-Fry-HCJ0RC5-x-large.jpg",
-              "caption" : "Toy Story"
-            },
-            {
-              _type : "image",
-              url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnerdJ3_VUlZsnPSYVPJ9B2cYot9JbpCcpwmC3FJ5aFDYSGMrGag",
-              "caption" : "Fancy car"
-            }
-          ]
-        }
-      ];
-      
       var suggestions = ["contact details"];
       suggestions = suggestions.concat(_.sample(suggestionsDb.suggestions, 3));
       
@@ -467,7 +425,7 @@ var tree = {
         self : 'botney'
       };
       
-      var promise = responsesDb.getRandomResponse('garbage', dict);
+      var promise = responsesDb.getRandomResponse('gibberish', dict);
       
       promise = promise.then(function(newOutput){
         if(newOutput){

@@ -40,6 +40,7 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
     
     for(var k in $scope.default){
       $scope.newKase[k] = $scope.default[k];
+      console.log('applying the default : %j', $scope.newKase);
     }
   };
   
@@ -71,6 +72,12 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
     for(var k in $scope.mapping){
       data[k] = kase[k];
     }
+    
+    for(var k in $scope.default){
+      data[k] = kase[k];
+    }
+    
+    console.log('saveKase %j', kase);
     
     $.ajax({
       url : url,
@@ -136,6 +143,10 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
       data[k] = kase[k];
     }
     
+    for(var k in $scope.default){
+      data[k] = kase[k];
+    }
+    
     $.ajax({
       url : url,
       type : "POST",
@@ -163,8 +174,7 @@ angular.module('casesApp').controller('caseController', ['$scope', '$location', 
     newItem.content = '';
   };
   
-  $scope.removeFromArray = function(arr, item){
-    var index = arr.indexOf(item);
+  $scope.removeFromArray = function(arr, index){
     arr.splice(index, 1);
   };
     

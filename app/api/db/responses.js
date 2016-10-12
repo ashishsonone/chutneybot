@@ -4,9 +4,11 @@ var sprintf = require("sprintf-js").sprintf;
 var regexUtils = require('../utils/regex');
 
 /*
-x = 'Hi I am {me}, how are you {you}'
-y = x.replace(/\{([a-z]+)\}/g, function(m, a){console.log(a); return '%(' + a + ')s'})
-sprintf(y, {me : 'Ashish', you : 'Dhanesh'})
+  cases/scenarios :
+  - gibberish
+  - intro-chutney
+  - intro-dentsu
+  - intro-other-company
 */
 
 function getRandomResponse(scenario, dict){
@@ -21,7 +23,7 @@ function getRandomResponse(scenario, dict){
     console.log('getRandomResponse : responses size %j', responses.length);
 
     var choosenResponse = _.sample(responses, 1)[0];
-    var output = choosenResponse.output;
+    var output = choosenResponse && choosenResponse.output;
     console.log('getRandomResponse : output %j', output);
     if(output){
       output = output.map(function(e){
@@ -33,6 +35,14 @@ function getRandomResponse(scenario, dict){
           value : o
         }
       });
+    }
+    else{
+      output = [
+        {
+          _type : 'text',
+          value : "Unable to respond to this scenario - '" + scenario + "'. Please feed me responses."
+        }
+      ]
     }
     
     console.log('getRandomResponse : output %j', output);
