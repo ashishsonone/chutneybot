@@ -14,3 +14,4 @@ mongorestore --collection awards --db chutney $folder/chutney/awards.bson
 mongorestore --collection contacts --db chutney $folder/chutney/contacts.bson
 mongorestore --collection responses --db chutney $folder/chutney/responses.bson
 mongorestore --collection cases --db chutney $folder/chutney/cases.bson
+mongorestore --collection news --db chutney $folder/chutney/news.bson
