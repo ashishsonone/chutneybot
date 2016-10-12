@@ -6,6 +6,7 @@ var responsesDb = require('../db/responses');
 
 var utils = require('../utils/utils');
 var _ = require('underscore');
+var cardUtils = require('../utils/card');
 
 var tree = {
   "work.root" : {
@@ -21,7 +22,7 @@ var tree = {
       var promise = workDb.getWorkForCompany(company);
       promise = promise.then(function(workList){
         //workList = workDb.present(workList);
-        
+        workList = cardUtils.setCardType(workList, 'work-card');
         console.log("work.root " + workList.length);
         
         if(workList.length > 0){
@@ -83,6 +84,7 @@ var tree = {
       var promise = workDb.getWorkByOffice(place);
       
       promise = promise.then(function(workList){
+        workList = cardUtils.setCardType(workList, 'work-card');
         //workList = workDb.present(workList);
         var workReply = {
           _type : 'cards',
@@ -122,7 +124,8 @@ var tree = {
     reply : function(session){
       var promise = workDb.getWork(3);
       promise = promise.then(function(workList){
-        workList = workDb.present(workList);
+        workList = cardUtils.setCardType(workList, 'work-card');
+        
         var workReply = {
           _type : 'cards',
           value : workList
@@ -162,7 +165,8 @@ var tree = {
     reply : function(session){
       var promise = workDb.getWork(3, 3);
       promise = promise.then(function(workList){
-        workList = workDb.present(workList);
+        workList = cardUtils.setCardType(workList, 'work-card');
+        
         var workReply = {
           _type : 'cards',
           value : workList

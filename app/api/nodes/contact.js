@@ -5,6 +5,7 @@ var responsesDb = require('../db/responses');
 var _ = require('underscore');
 var utils = require('../utils/utils');
 var countingUtils = require('../utils/counting');
+var cardUtils = require('../utils/card');
 
 //contact branches
 var tree = {
@@ -47,6 +48,7 @@ var tree = {
       var contactCard = null;
       
       promise = promise.then(function(contactObject){
+        contactObject = cardUtils.setCardType(contactObject, 'contact-card');
         contactCard = contactObject;
         return responsesDb.getRandomResponse('contact-done');
       });

@@ -5,6 +5,7 @@ var responsesDb = require('../db/responses');
 var _ = require('underscore');
 var utils = require('../utils/utils');
 var countingUtils = require('../utils/counting');
+var cardUtils = require('../utils/card');
 
 var tree = {
   "awards.name" : {
@@ -20,6 +21,8 @@ var tree = {
       var promise = awardsDb.getAwardsByName(awardName);
       
       promise = promise.then(function(awardsList){
+        awardsList = cardUtils.setCardType(awardsList, 'award-card');
+        
         if(awardsList.length == 0){
           var dict = {
             award : awardName
@@ -102,6 +105,7 @@ var tree = {
       var promise = awardsDb.getAwardsByOffice(place);
       
       promise = promise.then(function(awardsList){
+        awardsList = cardUtils.setCardType(awardsList, 'award-card');
         //workList = workDb.present(workList);
         var awardsReply = {
           _type : 'cards',
@@ -147,6 +151,7 @@ var tree = {
       if(year){
         promise = awardsDb.getAwardsForYear(year);
         promise = promise.then(function(awardsList){
+          awardsList = cardUtils.setCardType(awardsList, 'award-card');
           if(awardsList.length == 0){
             var dict = {
               year : year
@@ -180,6 +185,7 @@ var tree = {
       else if(dom_int){
         promise = awardsDb.getAwardsDomInt(dom_int);
         promise = promise.then(function(awardsList){
+          awardsList = cardUtils.setCardType(awardsList, 'award-card');
           var awardsReply = {
             _type : 'cards',
             value : awardsList
@@ -205,6 +211,7 @@ var tree = {
         //general awards show
         promise = awardsDb.getAwards(5);
         promise = promise.then(function(awardsList){
+          awardsList = cardUtils.setCardType(awardsList, 'award-card');
           var awardsReply = {
             _type : 'cards',
             value : awardsList

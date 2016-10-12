@@ -6,6 +6,7 @@ var responsesDb = require('../db/responses');
 
 var utils = require('../utils/utils');
 var _ = require('underscore');
+var cardUtils = require('../utils/card');
 
 //contact branches
 var tree = {
@@ -21,6 +22,7 @@ var tree = {
       
       var promise = clientsDb.getClientsByOffice(location);
       promise = promise.then(function(list){
+        list = cardUtils.setCardType(list, 'client-card');
         var workReply = {
           _type : 'cards',
           value : list
@@ -61,6 +63,7 @@ var tree = {
     reply : function (session) {
       var promise = clientsDb.getClients();
       promise = promise.then(function(list){
+        list = cardUtils.setCardType(list, 'client-card');
         var workReply = {
           _type : 'cards',
           value : list

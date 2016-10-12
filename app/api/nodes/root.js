@@ -5,7 +5,7 @@ var responsesDb = require('../db/responses');
 var newsDb = require('../db/news');
 
 var utils = require('../utils/utils');
-
+var cardUtils = require('../utils/card');
 var _ = require('underscore');
 
 var tree = {
@@ -43,6 +43,7 @@ var tree = {
       
       var promise = peopleDb.getByPositionId(position);
       promise = promise.then(function(person){
+        person = cardUtils.setCardType(person, 'person-card');
         if(!person){
           var dict = {
             position : position
@@ -93,6 +94,7 @@ var tree = {
       
       var promise = peopleDb.getByNameId(name);
       promise = promise.then(function(person){
+        person = cardUtils.setCardType(person, 'person-card');
         if(!person){
           var dict = {
             name : name
@@ -268,6 +270,7 @@ var tree = {
     reply : function(session){
       var promise = newsDb.getNews();
       promise = promise.then(function(newsList){
+        newsList = cardUtils.setCardType(newsList, 'news-card');
         var newsReply = {
           _type : 'cards',
           value : newsList

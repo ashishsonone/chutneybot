@@ -6,6 +6,7 @@ var responsesDb = require('../db/responses');
 
 var utils = require('../utils/utils');
 var _ = require('underscore');
+var cardUtils = require('../utils/card');
 
 //contact branches
 var tree = {
@@ -49,6 +50,8 @@ var tree = {
     reply : function (session) {
       var promise = teamDb.getImportantOnes();
       promise = promise.then(function(impPeople){
+        impPeople = cardUtils.setCardType(impPeople, 'person-card');
+        
         var impPeopleReply = {
           _type : 'cards',
           value : impPeople
