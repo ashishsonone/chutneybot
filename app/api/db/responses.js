@@ -21,6 +21,15 @@ var regexUtils = require('../utils/regex');
   - join-ask-phone
   - join-done
   
+  - contact-ask-location
+  - contact-done
+  
+  - work-given-company-worked
+  - work-given-company-not-worked
+  - work-given-office
+  - work-all
+  - work-all-more
+  
 */
 
 function getRandomResponse(scenario, dict){

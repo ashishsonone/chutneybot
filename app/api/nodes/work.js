@@ -2,6 +2,7 @@
 
 var workDb = require('../db/work');
 var suggestionsDb = require('../db/suggestions');
+var responsesDb = require('../db/responses');
 
 var utils = require('../utils/utils');
 var _ = require('underscore');
@@ -19,27 +20,42 @@ var tree = {
       
       var promise = workDb.getWorkForCompany(company);
       promise = promise.then(function(workList){
-        workList = workDb.present(workList);
+        //workList = workDb.present(workList);
+        
+        console.log("work.root " + workList.length);
         
         if(workList.length > 0){
-          var reply = [{
-            _type : 'text',
-            value : 'Here is what we have done for our client ' + company,
-          }];
-
           var workReply = {
             _type : 'cards',
             value : workList
-          }
-          reply.push(workReply);
+          };
+          
+          var dict = {
+            company : workList[0].client
+          };
+          
+          console.log("work.root getRandomResponse");
+          var promise = responsesDb.getRandomResponse('work-given-company-worked', dict);
+          
+          promise = promise.then(function(output){
+            console.log("work.root output.push");
+            output.push(workReply);
+            return output;
+          });
+          
+          return promise;
         }
         else{
-          var reply = [{
-            _type : 'text',
-            value : "It seems we haven't worked for " + company + " yet. Or I dont have that info in my brain cells right now."
-          }];
+          var dict = {
+            company : company
+          };
+          
+          var promise = responsesDb.getRandomResponse('work-given-company-not-worked', dict);
+          return promise;
         }
+      });
       
+      promise = promise.then(function(reply){
         return {
           reply : reply,
           suggestions : _.sample(suggestionsDb.suggestions, 4)
@@ -65,25 +81,30 @@ var tree = {
       var place = utils.extractFirstEntityValue(session.state.entities, 'place', []);
       
       var promise = workDb.getWorkByOffice(place);
+      
       promise = promise.then(function(workList){
-        workList = workDb.present(workList);
-        var reply = [{
-          _type : 'text',
-          value : "Here's what our " + place + " office has executed"
-        }];
-
+        //workList = workDb.present(workList);
         var workReply = {
           _type : 'cards',
           value : workList
         };
         
-        reply.push(workReply);
-
-        return {
-          reply : reply,
-          suggestions : _.sample(suggestionsDb.suggestions, 4)
-        }
+        var dict = {
+          office : place
+        };
+        
+        var p = responsesDb.getRandomResponse('work-given-office', dict);
+        p = p.then(function(output){
+          output.push(workReply);
+          return {
+            reply : output,
+            suggestions : _.sample(suggestionsDb.suggestions, 4)
+          }
+        });
+        
+        return p;  
       });
+      
       return promise;
     },
     
@@ -102,21 +123,21 @@ var tree = {
       var promise = workDb.getWork(3);
       promise = promise.then(function(workList){
         workList = workDb.present(workList);
-        var reply = [{
-          _type : 'text',
-          value : "Awesome! I'll show you what we've been upto recently. But you can also see our award winners or work for specific brands from the menu at the bottom"
-        }];
-
         var workReply = {
           _type : 'cards',
           value : workList
         }
-        reply.push(workReply);
-
-        return {
-          reply : reply,
-          suggestions : ["show more", "flipkart work"]
-        }
+        
+        var p = responsesDb.getRandomResponse('work-all', {});
+        p = p.then(function(output){
+          output.push(workReply);
+          return {
+            reply : output,
+            suggestions : ["show more", "flipkart work"]
+          }
+        });
+                
+        return p;
       });
       return promise;
     },
@@ -142,21 +163,21 @@ var tree = {
       var promise = workDb.getWork(3, 3);
       promise = promise.then(function(workList){
         workList = workDb.present(workList);
-        var reply = [{
-          _type : 'text',
-          value : "Here is next set of work. Remember to werk it"
-        }];
-
         var workReply = {
           _type : 'cards',
           value : workList
         };
-        reply.push(workReply);
-
-        return {
-          reply : reply,
-          suggestions : _.sample(suggestionsDb.suggestions, 4)
-        }
+        
+        var p = responsesDb.getRandomResponse('work-all-more', {});
+        p = p.then(function(output){
+          output.push(workReply);
+          return {
+            reply : output,
+            suggestions : _.sample(suggestionsDb.suggestions, 4)
+          }
+        });
+        
+        return p;
       });
       return promise;      
     },
