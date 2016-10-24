@@ -2,6 +2,7 @@
 
 var nodemailer = require('nodemailer');
 var util = require('util');
+var generalConfig = require('../config/general');
 
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport('smtp://ashishsonone@hotmail.com:Microsoft%400@smtp.live.com:587');
@@ -35,7 +36,7 @@ function sendCandidateApplicationMail(context){
   var subject = "[Bot] Job Application";
   
   var html = util.format(jobHtmlTemplate, context.name, context.position, context.branch, context.email, context.phone);
-  sendMail('ashishsonone009@hotmail.com', '[Bot] Job Application', html);
+  sendMail(generalConfig.mailAddress, '[Bot] Job Application', html);
 };
 
 module.exports = {

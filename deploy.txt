@@ -13,14 +13,15 @@ DEPLOYMENT INSTRUCTIONS
 5) Clone the code 
   git clone https://github.com/ashishsonone/chutneybot.git
 
-6) Files to change:
-  1) app/api/config/db.js : update mongodb url
-  2) app/api/config/wit.ai.js : update accessToken obtained in step 4
+6) Config Files to change:
+  a) app/api/config/db.js : update mongodb url
+  b) app/api/config/wit.ai.js : update accessToken obtained in step 4
+  c) app/api/config/general.js : update mailAddress which will receive the emails concerning job applications
 
 7) Install node dependencies, so run the command when inside root folder:
   npm install
   
-8) Run using
+8) Run the app using
   node app/index.js
 
 9) We're finished !! 
