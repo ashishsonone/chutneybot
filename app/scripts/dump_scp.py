@@ -13,5 +13,5 @@ import os
 from datetime import datetime
 folder = datetime.now().strftime('%Y-%m-%dT%H-%M')
 os.system("mongodump --db chutney --out " + folder)
-os.system("scp -r -i ~/Documents/AWS/estest.pem " + folder + " $myEC2:~/Downloads/")
+#os.system("scp -r -i ~/Documents/AWS/estest.pem " + folder + " $myEC2:~/Downloads/")
 print("backup folder = " + folder)

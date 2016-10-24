@@ -1,0 +1,30 @@
+DEPLOYMENT INSTRUCTIONS
+= = = = = = = = = = = =
+
+1) Install nodejs
+
+2) Install and start mongodb.
+
+3) Populate mongodb database from backup folder into database named 'chutney' (default). Find the utitlity script for this task in location 'app/scripts/restore.sh'. If backup folder is named '2016-10-24T18-20', it will have another folder named 'chutney' (db name) which contains actual bson data files. So just run the script as follows:
+  ./restore.sh chutney ./2016-10-24T18-20/chutney
+
+4) Configure your wit.ai account - use the zip file to restore it. Note down the 'Server Access Token' from settings page of your wit.ai account.
+
+5) Clone the code 
+  git clone https://github.com/ashishsonone/chutneybot.git
+
+6) Files to change:
+  1) app/api/config/db.js : update mongodb url
+  2) app/api/config/wit.ai.js : update accessToken obtained in step 4
+
+7) Install node dependencies, so run the command when inside root folder:
+  npm install
+  
+8) Run using
+  node app/index.js
+
+9) We're finished !! 
+  Access web chat ui at:
+    localhost:8002/web/chat.html
+  Acess admin panel ui at:
+    localhost:8002/web/admin.html
